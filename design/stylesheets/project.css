@@ -1,0 +1,44 @@
+.console-toggle {
+	background-color: #e0e0e0;
+	position: fixed; 
+	width: 100vw; 
+	height: 40px;
+	bottom: 0px; 
+	text-align: center;
+}
+.console-toggle:hover {
+	background-color: #ccc;
+}
+.console {
+	background-color: #fff;
+	position: fixed;
+	width: 100vw;
+	height: 200px;
+	bottom: 0px;
+	display: none;
+}
+.files {
+	background-color: #e0e0e0;
+	position: fixed;
+	height: 90vh;
+	right: 0px;
+	width: 40px;
+	text-align: center;
+}
+.files:hover {
+	background-color: #ccc;
+}
+.file-box {
+	vertical-align: middle;
+	height: 100px;
+	line-height: 100px;
+}
+.file-list {
+	background-color: #fff;
+	position: fixed;
+	height: 90vh;
+	width: 200px;
+	right: 0px;
+	display: none;
+	text-align: center;
+}
