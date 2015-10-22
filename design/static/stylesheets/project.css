@@ -67,3 +67,7 @@
 {
 	margin-right: 90px;
 }
+textarea
+{
+	resize: none;
+}
