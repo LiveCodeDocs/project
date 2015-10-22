@@ -1,16 +1,29 @@
 body
 {
 	overflow: hidden;
-	background-image: url("/static/images/congruent_pentagon.png"); 
+	background-image: url("/static/images/trees.jpg"); 
 	font-family: 'Signika', sans-serif;
+	color: #000000;
 }
 
-#mainBanner
+.container
 {	
 	position: absolute;
 	margin-top: 10%;
 	width: 100%;
 	height: 100%;
+	/*background-color: #ffffff;
+	opacity: .5;*/
+}
+
+#opaque-background-container
+{
+	width: 30%;
+	height: 35%;
+	left: 36%;
+	top: -14%;
+	background-color: #ffffff;
+	opacity: .5;
 }
 
 #WelcomeBanner

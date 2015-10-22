@@ -13,7 +13,11 @@ app.debug = True
 
 @app.route('/')
 def main():
-    return render_template("HomePage.html")
+	return render_template("HomePage.html")
+
+@app.route('/project')
+def renderProject():
+	return render_template("project.html")
 
 @app.route('/login', methods = ['POST'])
 def handlelogin():
