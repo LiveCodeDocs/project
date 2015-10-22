@@ -6,6 +6,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<!-- <script src="{{ url_for('static', filename = 'js/project.js') }}"></script> -->
 		<script src = "../static/stylesheets/project.css"></script>
+		<!-- <script src="{{ url_for('static', filename = '../static/js/project.js') }}"></script> -->
+		<script src = "../static/js/project.js"></script>
 		<!-- Create a simple CodeMirror instance -->
 		<!-- <link rel="stylesheet" href="{{ url_for('static', filename = 'codemirror/CodeMirror-master/lib/codemirror.css') }}"> -->
 		<link rel="stylesheet" href="../static/codemirror/CodeMirror-master/lib/codemirror.css">
@@ -81,13 +83,4 @@
 		</div>
 		<div class="console-toggle"><span class="glyphicon glyphicon-chevron-up"></span><br />Console</div>
 		<div class="console"></div>
-
-		<!--
-		<script>
-			var editor = CodeMirror.fromTextArea(document.getElementById("text_editor"), {
-			    lineNumbers: true,
-			    value: "function myScript(){return 100;}\n"
-			   	//viewportMargin: 25
-		 	}); 
-		 </script> -->
 	</body>
