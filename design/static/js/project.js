@@ -36,8 +36,8 @@ $(document).ready(function() {
 	addFilesHandler(false);
 	addConsoleHandler(false);
 
-	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "file:///C:/Users/cookmn/Documents/GitHub/project/design/templates/HomePage.html"});
-	document.getElementById('help').addEventListener("click", function () {window.location.href = "file:///C:/Users/cookmn/Documents/GitHub/project/design/templates/Help.html"});
+	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../templates/HomePage.html"});
+	document.getElementById('help').addEventListener("click", function () {window.location.href = "../templates/Help.html"});
 
 	// var editor = CodeMirror.fromTextArea(document.getElementById("text_editor"), {
 	//     // lineNumbers: true,
