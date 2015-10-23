@@ -1,5 +1,5 @@
 .console-toggle {
-	background-color: #C2EBFF;
+	background-color: #98AFC7;
 	position: fixed; 
 	width: 100vw; 
 	height: 40px;
@@ -18,7 +18,7 @@
 	display: none;
 }
 .files {
-	background-color: #C2EBFF;
+	background-color: #98AFC7;
 	position: fixed;
 	height: 90vh;
 	right: 0px;
@@ -34,7 +34,7 @@
 	line-height: 100px;
 }
 .file-list {
-	background-color: #F0FAFF;
+	background-color: #EBEBE0;
 	position: fixed;
 	height: 90vh;
 	width: 200px;
