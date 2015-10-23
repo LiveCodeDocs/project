@@ -1,7 +1,7 @@
 body
 {
 	overflow: hidden;
-	background-image: url("/static/images/trees.jpg"); 
+	background-image: url("../images/trees.jpg"); 
 	font-family: 'Signika', sans-serif;
 	color: #000000;
 }

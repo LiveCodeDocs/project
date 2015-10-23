@@ -33,7 +33,14 @@ $(document).ready(function() {
 			});
 		}
 	}
-
 	addFilesHandler(false);
 	addConsoleHandler(false);
+
+	// var editor = CodeMirror.fromTextArea(document.getElementById("text_editor"), {
+	//     // lineNumbers: true,
+	//     // value: "function myScript(){return 100;}\n"
+	//    	//viewportMargin: 25
+	// });
+
 });
+

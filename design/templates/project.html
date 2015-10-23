@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 	<head>
+		<!-- <link rel="stylesheet" href="{{ url_for('static', filename = 'stylesheets/project.css') }}"> -->
 		<link rel="stylesheet" type="text/css" href="../static/stylesheets/project.css">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="../static/js/project.js"></script>
+		<!-- <script src="{{ url_for('static', filename = 'js/project.js') }}"></script> -->
+		<script src = "../static/stylesheets/project.css"></script>
+		<!-- <script src="{{ url_for('static', filename = '../static/js/project.js') }}"></script> -->
+		<script src = "../static/js/project.js"></script>
+		<!-- Create a simple CodeMirror instance -->
+		<!-- <link rel="stylesheet" href="{{ url_for('static', filename = 'codemirror/CodeMirror-master/lib/codemirror.css') }}"> -->
+		<link rel="stylesheet" href="../static/codemirror/CodeMirror-master/lib/codemirror.css">
+		<!-- <script src="{{ url_for('static', filename = 'codemirror/CodeMirror-master/lib/codemirror.js') }}"></script> -->
+		<script src="../static/codemirror/CodeMirror-master/lib/codemirror.js"></script>
 		<title>Project</title>
 	</head>
 	<body>
@@ -65,7 +74,7 @@
 			</div>
 		</div>
 		<div class="jumbotron">
-			<div class="container" style="height: 80vh;">
+			<div id = "toolbar-nav" class="container" style="height: 80vh;">
 				<nav class="navbar navbar-default" style="margin-top: -10px;">
 					<ul class="nav nav-pills">
 						<li role="presentation"><a href="#"><span class="glyphicon glyphicon-folder-open"></span>&nbsp Project</a></li>
