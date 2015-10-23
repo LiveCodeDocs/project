@@ -23,4 +23,6 @@ function accountAccess(accessType)
 document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById('loginbutton').addEventListener("click", function () { accountAccess(0); });
 	document.getElementById('signupbutton').addEventListener("click", function () {accountAccess(0); });
+	document.getElementById('loginbutton').addEventListener("click", function () {window.location.href = "file:///C:/Users/cookmn/Documents/GitHub/project/design/templates/project.html"})
+	document.getElementById('helpButton').addEventListener("click", function () {window.location.href = "file:///C:/Users/cookmn/Documents/GitHub/project/design/templates/Help.html"})
 });
