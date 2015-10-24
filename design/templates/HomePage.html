@@ -8,14 +8,15 @@
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<link href='https://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>	
-		<script src = "{{ url_for('static', filename = 'HomePageJS.js') }}"></script>
-	
-		<!-- our code -->
-		<link rel="stylesheet" href="{{ url_for('static', filename = 'HomePageStyling.css') }}">
+		<!--<script src = "{{ url_for('static', filename = 'js/HomePageJS.js') }}"></script> -->
+		<script src = "../static/js/HomePageJS.js"></script>
+		<!-- <link rel="stylesheet" href="{{ url_for('static', filename = 'stylesheets/HomePageStyling.css') }}"> -->
+		<link rel="stylesheet" href="../static/stylesheets/HomePageStyling.css">
 	</head>
 
 	<body>
-		<div id = "mainBanner">
+		<div id = "mainBanner" class = "container">
+			<div id = "opaque-background-container" class = "container"></div>
 			<h1 id = "WelcomeBanner">Welcome to LiveCodeDocs!</h1>
 			<form id="buttonCluster">
 				<div id = "usernameField"> 
@@ -35,5 +36,4 @@
 			</div>
 		</div>
 	</body>
-
 </html>

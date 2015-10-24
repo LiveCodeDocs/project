@@ -53,7 +53,6 @@ def getProjectFiles():
 def saveFile():
 	if request.method == 'POST':
 		cnx = mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
-		
 		fileID = request.json[0]['fileid']
 		fileText = request.json[0]['fileText']
 		cursor = cnx.cursor()
@@ -85,17 +84,26 @@ def addProject():
 		args = [projectName, programingLang, userID]
 		cursor.callproc('AddProject', args)
 	return "success"
-	
+
+@app.route('/getProject', methods = ['GET'])
 def getProjects():
-	if request.method == 'POST':
+	if request.method == 'GET':
 		cnx - mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
-		projectName = request.json[0]['projectname']
-		programingLang = request.json[0]['language']
-		userID = request.json[0]['uid']
+		username = request.json[0]['username']
 		cursor = cnx.cursor()
-		args = [projectName, programingLang, userID]
-		cursor.callproc('AddProject', args)
-	return "success"
+		args = [username]
+		cursor.callproc('GetProjects', args)
+	return jsonify(data=cursor.fetchall())
+	
+@app.route('/getUserID', methods = ['GET'])
+def getUserID():
+	if request.method == 'GET':
+		cnx - mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
+		username = request.json[0]['username']
+		cursor = cnx.cursor()
+		args = [username]
+		cursor.callproc('GetProjects', args)
+	return jsonify(data=cursor.fetchall())
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

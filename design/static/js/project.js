@@ -41,6 +41,7 @@ $(document).ready(function() {
 			});
 		}
 	}
+<<<<<<< HEAD
 
 	var addNewFile = function(filename, projectId) {
 		if (filename == "") {
@@ -87,3 +88,21 @@ $(document).ready(function() {
 	addEventListeners();
 	loadFiles(2);
 });
+=======
+	addFilesHandler(false);
+	addConsoleHandler(false);
+
+	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../templates/HomePage.html"});
+	document.getElementById('help').addEventListener("click", function () {window.location.href = "../templates/Help.html"});
+
+	// var editor = CodeMirror.fromTextArea(document.getElementById("text_editor"), {
+	//     // lineNumbers: true,
+	//     // value: "function myScript(){return 100;}\n"
+	//    	//viewportMargin: 25
+	// });
+
+}
+
+);
+
+>>>>>>> origin/master

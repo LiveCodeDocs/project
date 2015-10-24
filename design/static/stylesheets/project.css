@@ -1,5 +1,5 @@
 .console-toggle {
-	background-color: #e0e0e0;
+	background-color: #98AFC7;
 	position: fixed; 
 	width: 100vw; 
 	height: 40px;
@@ -17,7 +17,7 @@
 	bottom: 0px;
 }
 .files {
-	background-color: #e0e0e0;
+	background-color: #98AFC7;
 	position: fixed;
 	height: 90vh;
 	right: 200px;
@@ -33,10 +33,44 @@
 	line-height: 100px;
 }
 .file-list {
-	background-color: #fff;
+	background-color: #EBEBE0;
 	position: fixed;
 	height: 90vh;
 	width: 200px;
 	right: 0px;
 	text-align: center;
 }
+
+.container-fluid {
+	background-color: #52A3CC;
+}
+
+
+#project
+{
+	margin-right: 120px;
+}
+
+#class
+{
+	margin-right: 90px;
+}
+
+#class2
+{
+	margin-right: 90px;
+}
+
+#class3
+{
+	margin-right: 90px;
+}
+textarea
+{
+	resize: none;
+}
+/*#toolbar-nav
+{
+	position: absolute;
+	left: 5%;
+}*/

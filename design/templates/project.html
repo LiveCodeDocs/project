@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 	<head>
+		<!-- <link rel="stylesheet" href="{{ url_for('static', filename = 'stylesheets/project.css') }}"> -->
 		<link rel="stylesheet" type="text/css" href="../static/stylesheets/project.css">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<<<<<<< HEAD
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 		<script src="../static/js/project.js"></script>
+=======
+		<!-- <script src="{{ url_for('static', filename = 'js/project.js') }}"></script> -->
+		<script src = "../static/stylesheets/project.css"></script>
+		<!-- <script src="{{ url_for('static', filename = '../static/js/project.js') }}"></script> -->
+		<script src = "../static/js/project.js"></script>
+		<!-- Create a simple CodeMirror instance -->
+		<!-- <link rel="stylesheet" href="{{ url_for('static', filename = 'codemirror/CodeMirror-master/lib/codemirror.css') }}"> -->
+		<link rel="stylesheet" href="../static/codemirror/CodeMirror-master/lib/codemirror.css">
+		<!-- <script src="{{ url_for('static', filename = 'codemirror/CodeMirror-master/lib/codemirror.js') }}"></script> -->
+		<script src="../static/codemirror/CodeMirror-master/lib/codemirror.js"></script>
+>>>>>>> origin/master
 		<title>Project</title>
 	</head>
 	<body>
@@ -19,15 +32,15 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="#">Live Code Docs</a>
+		      <a style="color:#ffffff;" class="navbar-brand" href="#">Live Code Docs</a>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-		        <li><a href="#">My Projects</a></li>
+		        <li><a style="color:#ffffff;" href="#">My Projects</a></li>
 		        <li class="dropdown">
-		        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="current-project">[Current Project]</span> <span class="caret"></span></a>
+		        <a style="color:#ffffff;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="current-project">[Current Project]</span> <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="#">Project 2</a></li>
 		            <li><a href="#">Project 3</a></li>
@@ -39,13 +52,17 @@
 		      </ul>
 		      <form class="navbar-form navbar-left" role="search">
 		        <div class="form-group">
-		          <input type="text" class="form-control" placeholder="How can I help?">
+		          <input type="text" class="form-control" placeholder="Search">
 		        </div>
+<<<<<<< HEAD
 		        <button type="submit" class="btn btn-primary">Search</button>
+=======
+		        <button type="submit" class="btn btn-default">Go >></button>
+>>>>>>> origin/master
 		      </form>
 		      <ul class="nav navbar-nav navbar-right">
-		      	<p class="navbar-text">Signed in as Josh Green</p>
-		        <li><a href="#">Log Out</a></li>
+		      	<p style="color:#ffffff;" class="navbar-text">Signed in as Josh Green</p>
+		        <li><a style="color:#ffffff;" id = "logOutButton" href="#">Log Out</a></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
@@ -58,18 +75,36 @@
 		</div>
 		<div class="file-list">
 			<h1>Files</h1>
+<<<<<<< HEAD
 			<button type="button" id="new-file-button" class="btn btn-default" data-toggle="modal" data-target="#new-file-modal">New File</button>
 			<ul id="project-files-list" class="list-group">				
 			</ul>
+=======
+			<div id = "filehandler">
+				<div id = "project"><h3>Project</h3></div>
+					<div id = "class"><h5>Class1</h4></div>
+					<div id = "class2"><h5>Class2</h4></div>
+					<div id = "class3"><h5>Class3</h4></div>
+			</div>
+>>>>>>> origin/master
 		</div>
 		<div class="jumbotron">
-			<div class="container" style="height: 80vh;">
+			<div id = "toolbar-nav" class="container" style="height: 80vh;">
 				<nav class="navbar navbar-default" style="margin-top: -10px;">
 					<ul class="nav nav-pills">
+						<li role="presentation"><a href="#" style = "color:#007A29;"><span class="glyphicon glyphicon-play" style = "color:#007A29;"></span> &nbsp Run</a></li>
+						<li role="presentation"><a href="#" style = "color:#FF0000;"><span class="glyphicon glyphicon glyphicon-stop" style = "color:#FF0000;"></span>&nbsp Stop</a></li>
+						<li role="presentation"><a href="#"><span class="glyphicon glyphicon-file"></span>&nbsp File</a></li>
 						<li role="presentation"><a href="#"><span class="glyphicon glyphicon-folder-open"></span>&nbsp Project</a></li>
-						<li role="presentation"><a href="#"><span class="glyphicon glyphicon-question-sign"></span>&nbsp Help</a></li>
+						<li role="presentation"><a href="#"><span class="glyphicon glyphicon-cog"></span>&nbsp Settings</a></li>
+						<li role="presentation"><a href="#"><span class="glyphicon glyphicon-save"></span>&nbsp Save</a></li>
+						<li role="presentation"><a id = "help" href="#"><span class="glyphicon glyphicon-question-sign"></span>&nbsp Help</a></li>
+
 					</ul>
 				</nav>
+				<div id = "text_editor_div"> 
+					<textarea rows = "37" cols = "159" id = "text_editor"></textarea>
+				</div>
 			</div>
 			<div class="container" style="background-color: blue;"></div>
 		</div>
