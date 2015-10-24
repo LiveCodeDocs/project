@@ -79,7 +79,10 @@ $(document).ready(function() {
 			dataType: "json",
 			success: function(data) {
 				console.log(data);
-			}
+			},
+			error: function(data) {
+				console.log(data);
+			} 
 		});
 	}
 
@@ -87,10 +90,6 @@ $(document).ready(function() {
 	addConsoleHandler(true);
 	addEventListeners();
 	loadFiles(2);
-});
-=======
-	addFilesHandler(false);
-	addConsoleHandler(false);
 
 	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../templates/HomePage.html"});
 	document.getElementById('help').addEventListener("click", function () {window.location.href = "../templates/Help.html"});
@@ -101,8 +100,4 @@ $(document).ready(function() {
 	//    	//viewportMargin: 25
 	// });
 
-}
-
-);
-
->>>>>>> origin/master
+});
