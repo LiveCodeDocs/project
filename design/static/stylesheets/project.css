@@ -3,7 +3,7 @@
 	position: fixed; 
 	width: 100vw; 
 	height: 40px;
-	bottom: 0px; 
+	bottom: 200px; 
 	text-align: center;
 }
 .console-toggle:hover {
@@ -15,13 +15,12 @@
 	width: 100vw;
 	height: 200px;
 	bottom: 0px;
-	display: none;
 }
 .files {
 	background-color: #e0e0e0;
 	position: fixed;
 	height: 90vh;
-	right: 0px;
+	right: 200px;
 	width: 40px;
 	text-align: center;
 }
@@ -39,6 +38,5 @@
 	height: 90vh;
 	width: 200px;
 	right: 0px;
-	display: none;
 	text-align: center;
 }
