@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, url_for, session, request
+from flask import Flask, render_template, url_for, session, request, jsonify
 import mysql.connector
 import sys
 import requests
@@ -43,16 +43,20 @@ def openFile():
 def getProjectFiles():
 	if request.method == 'GET':
 		cnx = mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
-		projectID = request.json[0]['projectid']
+		projectID = request.args.get('projectid')
 		cursor = cnx.cursor()
 		args = [projectID]
 		cursor.callproc('GetProjectFiles', args)
-	return jsonify(data=cursor.fetchall())
+		for result in cursor.stored_results():
+			files = result.fetchall()
+		cnx.close()
+	return jsonify(files)
 	
 @app.route('/saveFile', methods = ['POST'])
 def saveFile():
 	if request.method == 'POST':
 		cnx = mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
+		
 		fileID = request.json[0]['fileid']
 		fileText = request.json[0]['fileText']
 		cursor = cnx.cursor()
@@ -84,26 +88,17 @@ def addProject():
 		args = [projectName, programingLang, userID]
 		cursor.callproc('AddProject', args)
 	return "success"
-
-@app.route('/getProject', methods = ['GET'])
-def getProjects():
-	if request.method == 'GET':
-		cnx - mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
-		username = request.json[0]['username']
-		cursor = cnx.cursor()
-		args = [username]
-		cursor.callproc('GetProjects', args)
-	return jsonify(data=cursor.fetchall())
 	
-@app.route('/getUserID', methods = ['GET'])
-def getUserID():
-	if request.method == 'GET':
+def getProjects():
+	if request.method == 'POST':
 		cnx - mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
-		username = request.json[0]['username']
+		projectName = request.json[0]['projectname']
+		programingLang = request.json[0]['language']
+		userID = request.json[0]['uid']
 		cursor = cnx.cursor()
-		args = [username]
-		cursor.callproc('GetProjects', args)
-	return jsonify(data=cursor.fetchall())
+		args = [projectName, programingLang, userID]
+		cursor.callproc('AddProject', args)
+	return "success"
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

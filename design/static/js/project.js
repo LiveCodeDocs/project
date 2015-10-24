@@ -41,7 +41,6 @@ $(document).ready(function() {
 			});
 		}
 	}
-<<<<<<< HEAD
 
 	var addNewFile = function(filename, projectId) {
 		if (filename == "") {
@@ -57,10 +56,12 @@ $(document).ready(function() {
 			url: "http://livecodedocs.csse.rose-hulman.edu:5000/newFile",
 			data: JSON.stringify(query, null, '\t'),			
 			contentType: "application/json; charset=utf-8",
-			dataType: "json",
 			success: function(data) {
-				console.log(data);
+				console.log("Data is: ", data);
 				loadFiles(query[0]["projectId"]);
+			},
+			error: function(data) {
+				console.log("Error: ", data);
 			}
 		});
 	}
@@ -74,14 +75,20 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			url: "http://livecodedocs.csse.rose-hulman.edu:5000/getProjectFiles",
-			data: JSON.stringify(query, null, '\t'),
+			data: {
+				"projectid": projectId
+			},
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			success: function(data) {
-				console.log(data);
+				var id;
+				for (id in data) {
+					var html = "<li class='list-group-item' data-id=" + id + ">" + data[id] + "</li>";
+					$("#project-files-list").append(html);
+				}
 			},
 			error: function(data) {
-				console.log(data);
+				console.log("Error: ", data);
 			} 
 		});
 	}
