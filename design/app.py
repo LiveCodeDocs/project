@@ -84,7 +84,26 @@ def addProject():
 		cursor.callproc('AddProject', args)
 	return "success"
 	
-		
+@app.route('/getProject', methods = ['GET'])
+def getProjects():
+	if request.method == 'GET':
+		cnx - mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', dataBase = 'LiveCodeDocs')
+		username = request.json[0]['username']
+		cursor = cnx.cursor()
+		args = [username]
+		cursor.callproc('GetProjects', args)
+	return jsonify(data=cursor.fetchall())
+	
+@app.route('/getUserID', methods = ['GET'])
+def getUserID():
+	if request.method == 'GET':
+		cnx - mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', dataBase = 'LiveCodeDocs')
+		username = request.json[0]['username']
+		cursor = cnx.cursor()
+		args = [username]
+		cursor.callproc('GetProjects', args)
+	return jsonify(data=cursor.fetchall())
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
