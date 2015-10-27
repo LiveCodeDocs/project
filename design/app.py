@@ -88,6 +88,10 @@ def addProject():
 		args = [projectName, programingLang, userID]
 		cursor.callproc('AddProject', args)
 	return "success"
+
+@app.route('/help')
+def renderHelpPage():
+	return render_template("Help.html")
 	
 def getProjects():
 	if request.method == 'POST':

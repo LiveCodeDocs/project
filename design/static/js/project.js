@@ -98,8 +98,8 @@ $(document).ready(function() {
 	addEventListeners();
 	loadFiles(2);
 
-	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../templates/HomePage.html"});
-	document.getElementById('help').addEventListener("click", function () {window.location.href = "../templates/Help.html"});
+	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../"});
+	document.getElementById('help').addEventListener("click", function () {window.location.href = "../help"});
 
 	// var editor = CodeMirror.fromTextArea(document.getElementById("text_editor"), {
 	//     // lineNumbers: true,
