@@ -1,5 +1,5 @@
-
 from flask import Flask, render_template, url_for, session, request, jsonify
+from runCode import runCode
 import mysql.connector
 import sys
 import requests
@@ -96,9 +96,11 @@ def renderHelpPage():
 @app.route('/runCode', methods = ['POST'])
 def getCode():
 	if request.method == 'POST':
-		code = request.json[0]['code']
-	
-	
+		code = request.json['code']
+		returnVal = runCode(code)
+		return returnVal
+		
+		
 def getProjects():
 	if request.method == 'POST':
 		cnx - mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')

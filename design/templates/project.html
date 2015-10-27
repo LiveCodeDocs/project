@@ -14,7 +14,7 @@
 		<!-- <script src="../static/codemirror/CodeMirror-master/lib/codemirror.js"></script> -->
 		<title>Project</title>
 	</head>
-	<body>
+	<body style = "overflow: hidden">
 		<!-- BEGIN NAVBAR -->
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
@@ -63,17 +63,19 @@
 				<span class="glyphicon glyphicon-file"></span>
 			</div>
 		</div>
-		<div class="file-list">
+		<div class="file-list" style="display:block">
 			<h1>Files</h1>
 			<button type="button" id="new-file-button" class="btn btn-default" data-toggle="modal" data-target="#new-file-modal">New File</button>
-			<ul id="project-files-list" class="list-group">				
+			<div style="overflow:auto; height: 100%">
+				<ul id="project-files-list" class="list-group">				
+			</div>
 			</ul>
 		</div>
 		<div class="jumbotron">
 			<div id = "toolbar-nav" class="container" style="height: 80vh;">
 				<nav class="navbar navbar-default" style="margin-top: -10px;">
 					<ul class="nav nav-pills">
-						<li role="presentation"><a href="#" style = "color:#007A29;"><span class="glyphicon glyphicon-play" style = "color:#007A29;"></span> &nbsp Run</a></li>
+						<li role="presentation"><a id = "runButton" href="#" style = "color:#007A29;"><span class="glyphicon glyphicon-play" style = "color:#007A29;"></span> &nbsp Run</a></li>
 						<li role="presentation"><a href="#" style = "color:#FF0000;"><span class="glyphicon glyphicon glyphicon-stop" style = "color:#FF0000;"></span>&nbsp Stop</a></li>
 						<li role="presentation"><a href="#"><span class="glyphicon glyphicon-file"></span>&nbsp File</a></li>
 						<li role="presentation"><a href="#"><span class="glyphicon glyphicon-folder-open"></span>&nbsp Project</a></li>
