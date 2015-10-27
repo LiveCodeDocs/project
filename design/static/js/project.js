@@ -104,13 +104,20 @@ $(document).ready(function() {
 			data: JSON.stringify({"code": codeToRun}, null, '\t'),
 			contentType: "application/json; charset-utf-8",
 			success: function(data) {
-				console.log("Data is: ", data);
+				addTextToConsole(data);
 			},
 			error: function(data) {
-				console.log("Error: ", data);
+				addTextToConsole(data);
 			}
 		});
 		});
+	}
+
+	var addTextToConsole = function(text) {
+		var console = document.getElementsByClassName("console")[0];
+		var newDiv = document.createElement("div");
+		newDiv.innerHTML = text;
+		console.appendChild(newDiv);
 	}
 
 
