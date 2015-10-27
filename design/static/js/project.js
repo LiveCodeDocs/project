@@ -93,6 +93,28 @@ $(document).ready(function() {
 		});
 	}
 
+
+	var sendCodeToServerHandler = function() {
+		$('#runButton').on("click", function () 
+		{
+		var codeToRun = $("#text_editor").val();
+		$.ajax({
+			type: "POST",
+			url: "http://livecodedocs.csse.rose-hulman.edu:5000/runCode",
+			data: JSON.stringify({"code": codeToRun}, null, '\t'),
+			contentType: "application/json; charset-utf-8",
+			success: function(data) {
+				console.log("Data is: ", data);
+			},
+			error: function(data) {
+				console.log("Error: ", data);
+			}
+		});
+		});
+	}
+
+
+	sendCodeToServerHandler();
 	addFilesHandler(true);
 	addConsoleHandler(true);
 	addEventListeners();
