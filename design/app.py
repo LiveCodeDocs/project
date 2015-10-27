@@ -92,6 +92,12 @@ def addProject():
 @app.route('/help')
 def renderHelpPage():
 	return render_template("Help.html")
+
+@app.route('/runCode', methods = ['POST'])
+def getCode():
+	if request.method == 'POST':
+		code = request.json[0]['code']
+	
 	
 def getProjects():
 	if request.method == 'POST':
