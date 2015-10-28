@@ -51,6 +51,19 @@ def getProjectFiles():
 			files = result.fetchall()
 		cnx.close()
 	return jsonify(files)
+
+@app.route('/getFileContent', methods = ['GET'])
+def getFileContent():
+	if request.method == 'GET':
+		cnx = mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
+		fileId = request.args.get('fileId')
+		cursor = cnx.cursor()
+		args = [fileId]
+		cursor.callproc('GetFileContent', args)
+		for result in cursor.stored_results():
+			content = result.fetchall()
+		cnx.close()
+	return jsonify(content)
 	
 @app.route('/saveFile', methods = ['POST'])
 def saveFile():
@@ -98,8 +111,7 @@ def getCode():
 	if request.method == 'POST':
 		code = request.json['code']
 		returnVal = runCode(code)
-		return returnVal
-		
+		return returnVal		
 		
 def getProjects():
 	if request.method == 'POST':
