@@ -83,7 +83,7 @@ $(document).ready(function() {
 			success: function(data) {
 				var id;
 				for (id in data) {
-					var html = "<li class='list-group-item' data-id=" + id + ">" + data[id] + "</li>";
+					var html = "<button style = 'background-color: #EBEBE0' class='list-group-item' data-id=" + id + ">" + data[id] + "</button>";
 					$("#project-files-list").append(html);
 				}
 			},
