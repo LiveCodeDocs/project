@@ -5,7 +5,10 @@
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-		<script src="{{ url_for('static', filename = '../static/js/project.js') }}"></script>
+		<script src="{{ url_for('static', filename = '../static/codemirror/CodeMirror-master/lib/codemirror.js') }}"></script>
+		<link rel="stylesheet" href="{{ url_for('static', filename = '../static/codemirror/CodeMirror-master/lib/codemirror.css') }}">
+		<script src="{{ url_for('static', filename = '../static/codemirror/CodeMirror-master/mode/javascript/javascript.js') }}"></script>
+		<script src="{{ url_for('static', filename = '../static/js/project.js') }}"></script>	
 		<!-- <script src = "../static/js/project.js"></script> -->
 		<!-- Create a simple CodeMirror instance -->
 		<!-- <link rel="stylesheet" href="{{ url_for('static', filename = 'codemirror/CodeMirror-master/lib/codemirror.css') }}"> -->
@@ -85,8 +88,8 @@
 
 					</ul>
 				</nav>
-				<div id = "text_editor_div"> 
-					<textarea rows = "37" cols = "159" id = "text_editor"></textarea>
+				<div id = "text_editor_div" style="height:530px">
+					<!--<textarea rows = "37" cols = "159" id = "text_editor"></textarea>-->	
 				</div>
 			</div>
 			<div class="container" style="background-color: blue;"></div>
