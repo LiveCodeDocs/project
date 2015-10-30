@@ -10,7 +10,7 @@ def main():
 
 def runCode(stringCode):
 	
-	tempFile = open('tempFile.py', 'w')
+	tempFile = open('a.py', 'w')
 	tempFile.write(stringCode)
 	tempFile.close()
 		# create file-like string to capture output
@@ -23,8 +23,8 @@ def runCode(stringCode):
 
 		#subprocess.call("sudo -u nobody python tempFile.py", shell=True)		
 	
-	proc = subprocess.Popen("sudo -u nobody python tempFile.py", stdout=subprocess.PIPE)	
-	out_iter = iter(proc.stdout.readline(), b"")
+	proc = subprocess.Popen('sudo -u nobody python a.py', shell=True, stdout=subprocess.PIPE)	
+	out_iter = iter(proc.stdout.readline, b"")
 	userOut = ""
 	for line in out_iter:
 		print line	
