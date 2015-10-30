@@ -148,11 +148,11 @@ $(document).ready(function() {
 		console.appendChild(newDiv);
 	}
 
-	var myCodeMirror = CodeMirror(document.getElementById('text_editor_div'), {
+	/*var myCodeMirror = CodeMirror(document.getElementById('text_editor_div'), {
 		lineNumbers: true,
         	extraKeys: {"Ctrl-Space": "autocomplete"},
 	        mode: {name: "javascript", globalVars: true}
-	});
+	});*/
 
 	
 	//GLOBALS
@@ -162,7 +162,7 @@ $(document).ready(function() {
 	sendCodeToServerHandler();
 	addFilesHandler(true);
 	addConsoleHandler(true);
-	addEventListeners(myCodeMirror);
+	//addEventListeners(myCodeMirror);
 	loadFiles(2);
 	
 
