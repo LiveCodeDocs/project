@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	var addEventListeners = function() {
+	var addEventListeners = function(myCodeMirror) {
 		$("#new-file-add-button").on("click", function() {
 			var filename = $("#new-file-name").val();
 			var projectId = 2;
@@ -9,7 +9,7 @@ $(document).ready(function() {
 		$("#project-files-list").on("click", ".files-list-item", function() {
 			var fileId = $(this).attr("data-id");
 			currentFileId = fileId;
-			loadFileContent(fileId);
+			loadFileContent(fileId, myCodeMirror);
 		});
 	}
 
@@ -100,7 +100,7 @@ $(document).ready(function() {
 		});
 	}
 
-	var loadFileContent = function(fileId) {
+	var loadFileContent = function(fileId, myCodeMirror) {
 		$.ajax({
 			type: "GET",
 			url: "http://livecodedocs.csse.rose-hulman.edu:5000/getFileContent",
@@ -112,7 +112,7 @@ $(document).ready(function() {
 			success: function(data) {
 				var id;
 				for (id in data) {
-					$("#text_editor_div").find("textarea").val(data[id]);
+					myCodeMirror.getDoc().setValue(data[id]);
 				}
 			},
 			error: function(data) {
@@ -162,7 +162,7 @@ $(document).ready(function() {
 	sendCodeToServerHandler();
 	addFilesHandler(true);
 	addConsoleHandler(true);
-	addEventListeners();
+	addEventListeners(myCodeMirror);
 	loadFiles(2);
 	
 
