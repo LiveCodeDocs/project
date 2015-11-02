@@ -88,6 +88,7 @@ $(document).ready(function() {
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			success: function(data) {
+				print("return from file add succeeded");
 				var id;
 				for (id in data) {
 					var html = "<button style = 'background-color: #EBEBE0; text-align: center' class='list-group-item files-list-item' data-id=" + id + ">" + data[id] + "</button>";
@@ -122,10 +123,10 @@ $(document).ready(function() {
 	}	
 
 
-	var sendCodeToServerHandler = function() {
+	var sendCodeToServerHandler = function(myCodeMirror) {
 		$('#runButton').on("click", function () 
 		{
-		var codeToRun = $("#text_editor").val();
+		var codeToRun = myCodeMirror.getDoc().getValue();
 		$.ajax({
 			type: "POST",
 			url: "http://livecodedocs.csse.rose-hulman.edu:5000/runCode",
@@ -148,21 +149,29 @@ $(document).ready(function() {
 		console.appendChild(newDiv);
 	}
 
-	/*var myCodeMirror = CodeMirror(document.getElementById('text_editor_div'), {
+	var myCodeMirror = CodeMirror(document.getElementById('text_editor_div'), {
 		lineNumbers: true,
         	extraKeys: {"Ctrl-Space": "autocomplete"},
 	        mode: {name: "javascript", globalVars: true}
-	});*/
+	});
+
+	//TEST FOR CODEMIRROR CHANGES EVENT. NOT FINAL
+	var testArray = [];
+	myCodeMirror.on("changes", function(myCodeMirror, changeArray) {
+		testArray.push(changeArray);
+		console.log(testArray);
+	});
+	//END TEST
 
 	
 	//GLOBALS
 	var currentFileId = -1;
 	//END GLOBALS
 
-	sendCodeToServerHandler();
+	sendCodeToServerHandler(myCodeMirror);
 	addFilesHandler(true);
 	addConsoleHandler(true);
-	//addEventListeners(myCodeMirror);
+	addEventListeners(myCodeMirror);
 	loadFiles(2);
 	
 
