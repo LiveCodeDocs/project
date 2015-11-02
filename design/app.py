@@ -50,7 +50,7 @@ def getProjectFiles():
 		for result in cursor.stored_results():
 			files = result.fetchall()
 		cnx.close()
-	return jsonify(files)
+		return jsonify(files)
 
 @app.route('/getFileContent', methods = ['GET'])
 def getFileContent():

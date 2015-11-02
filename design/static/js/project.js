@@ -60,7 +60,8 @@ $(document).ready(function() {
 			contentType: "application/json; charset=utf-8",
 			success: function(data) {
 				console.log("Data is: ", data);
-				loadFiles(query[0]["projectId"]);
+				//loadFiles(query[0]["projectId"]);
+				loadFiles(2);
 			},
 			error: function(data) {
 				console.log("Error: ", data);
@@ -83,10 +84,16 @@ $(document).ready(function() {
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			success: function(data) {
-				print("return from file add succeeded");
-				var id;
+				console.log(data);
+				//var id;
+				var file_list = $("#project-files-list");
+				while (file_list.children()[0])
+				{
+					file_list.children()[0].remove();
+				}
 				for (id in data) {
 					var html = "<li class='list-group-item' data-id=" + id + ">" + data[id] + "</li>";
+					//var html = "<li class='list-group-item' data-id=" + "somefuckingshit" + ">" + "returned"  + "</li>";
 					$("#project-files-list").append(html);
 				}
 			},
