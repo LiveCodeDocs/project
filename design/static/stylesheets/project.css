@@ -69,6 +69,10 @@ textarea
 {
 	resize: none;
 }
+
+#html {
+       text-align: center;
+}
 /*#toolbar-nav
 {
 	position: absolute;
