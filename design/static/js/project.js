@@ -1,3 +1,5 @@
+config.extraPlugins = 'CodeMirror';
+
 $(document).ready(function() {
 
 	var addEventListeners = function() {
@@ -125,7 +127,7 @@ $(document).ready(function() {
 	addFilesHandler(true);
 	addConsoleHandler(true);
 	addEventListeners();
-	loadFiles(2);
+	loadFiles();
 
 	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../"});
 	document.getElementById('help').addEventListener("click", function () {window.location.href = "../help"});
