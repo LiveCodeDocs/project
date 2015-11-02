@@ -1,15 +1,12 @@
+config.extraPlugins = 'CodeMirror';
+
 $(document).ready(function() {
 
-	var addEventListeners = function(myCodeMirror) {
+	var addEventListeners = function() {
 		$("#new-file-add-button").on("click", function() {
 			var filename = $("#new-file-name").val();
 			var projectId = 2;
 			addNewFile(filename, projectId);
-		});
-		$("#project-files-list").on("click", ".files-list-item", function() {
-			var fileId = $(this).attr("data-id");
-			currentFileId = fileId;
-			loadFileContent(fileId, myCodeMirror);
 		});
 	}
 
@@ -37,14 +34,12 @@ $(document).ready(function() {
 				$(".console-toggle").css("bottom", "0px");
 				$(".console").hide();
 				addConsoleHandler(false);
-				document.getElementById("text_editor_div").style.height = '730px';
 			});
 		} else {
 			$(".console-toggle").on("click", function() {
 				$(".console-toggle").css("bottom", "200px");
 				$(".console").show();
 				addConsoleHandler(true);
-				document.getElementById("text_editor_div").style.height = '530px';
 			});
 		}
 	}
@@ -91,7 +86,7 @@ $(document).ready(function() {
 				print("return from file add succeeded");
 				var id;
 				for (id in data) {
-					var html = "<button style = 'background-color: #EBEBE0; text-align: center' class='list-group-item files-list-item' data-id=" + id + ">" + data[id] + "</button>";
+					var html = "<li class='list-group-item' data-id=" + id + ">" + data[id] + "</li>";
 					$("#project-files-list").append(html);
 				}
 			},
@@ -100,27 +95,6 @@ $(document).ready(function() {
 			} 
 		});
 	}
-
-	var loadFileContent = function(fileId, myCodeMirror) {
-		$.ajax({
-			type: "GET",
-			url: "http://livecodedocs.csse.rose-hulman.edu:5000/getFileContent",
-			data: {
-				"fileId": fileId
-			},
-			contentType: "application/json; charset=utf-8",
-			dataType: "json",
-			success: function(data) {
-				var id;
-				for (id in data) {
-					myCodeMirror.getDoc().setValue(data[id]);
-				}
-			},
-			error: function(data) {
-				console.log("ERROR: " + data);
-			}
-		});
-	}	
 
 
 	var sendCodeToServerHandler = function(myCodeMirror) {
@@ -149,6 +123,7 @@ $(document).ready(function() {
 		console.appendChild(newDiv);
 	}
 
+<<<<<<< HEAD
 	var myCodeMirror = CodeMirror(document.getElementById('text_editor_div'), {
 		lineNumbers: true,
         	extraKeys: {"Ctrl-Space": "autocomplete"},
@@ -167,13 +142,20 @@ $(document).ready(function() {
 	//GLOBALS
 	var currentFileId = -1;
 	//END GLOBALS
+=======
+>>>>>>> 9ee9dec991f6793df5fddd9084d0430ab24a806e
 
 	sendCodeToServerHandler(myCodeMirror);
 	addFilesHandler(true);
 	addConsoleHandler(true);
+<<<<<<< HEAD
 	addEventListeners(myCodeMirror);
 	loadFiles(2);
 	
+=======
+	addEventListeners();
+	loadFiles();
+>>>>>>> 9ee9dec991f6793df5fddd9084d0430ab24a806e
 
 	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../"});
 	document.getElementById('help').addEventListener("click", function () {window.location.href = "../help"});
