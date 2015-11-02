@@ -1,4 +1,4 @@
-config.extraPlugins = 'CodeMirror';
+//config.extraPlugins = 'CodeMirror';
 
 $(document).ready(function() {
 
@@ -123,7 +123,6 @@ $(document).ready(function() {
 		console.appendChild(newDiv);
 	}
 
-<<<<<<< HEAD
 	var myCodeMirror = CodeMirror(document.getElementById('text_editor_div'), {
 		lineNumbers: true,
         	extraKeys: {"Ctrl-Space": "autocomplete"},
@@ -142,20 +141,12 @@ $(document).ready(function() {
 	//GLOBALS
 	var currentFileId = -1;
 	//END GLOBALS
-=======
->>>>>>> 9ee9dec991f6793df5fddd9084d0430ab24a806e
 
 	sendCodeToServerHandler(myCodeMirror);
 	addFilesHandler(true);
 	addConsoleHandler(true);
-<<<<<<< HEAD
 	addEventListeners(myCodeMirror);
 	loadFiles(2);
-	
-=======
-	addEventListeners();
-	loadFiles();
->>>>>>> 9ee9dec991f6793df5fddd9084d0430ab24a806e
 
 	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../"});
 	document.getElementById('help').addEventListener("click", function () {window.location.href = "../help"});
