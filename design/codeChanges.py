@@ -4,8 +4,9 @@
 from test.test_importlib.source.test_source_encoding import LineEndingTest
 class Code():
     
-    def __init__(self):
+    def __init__(self, fileID):
         
+        self.fileID = fileID
         self.linesOfCode = []
         self.queueOfChanges = []
         
