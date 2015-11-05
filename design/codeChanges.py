@@ -1,7 +1,7 @@
 '''
 @author: bonattt
 '''
-from test.test_importlib.source.test_source_encoding import LineEndingTest
+#from test.test_importlib.source.test_source_encoding import LineEndingTest
 class Code():
     
     def __init__(self, fileID):

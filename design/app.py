@@ -1,13 +1,15 @@
 from flask import Flask, render_template, url_for, session, request, jsonify
+from flask.ext.socketio import SocketIO, emit
 from runCode import runCode
 import mysql.connector
 import sys
 import requests
 import json
-
 from flask.ext.cors import CORS
+
 app = Flask(__name__)
 cors = CORS(app)
+socketio = SocketIO(app)
 
 app.debug = True
 
@@ -111,7 +113,12 @@ def getCode():
 	if request.method == 'POST':
 		code = request.json['code']
 		returnVal = runCode(code)
-		return returnVal		
+		return returnVal
+
+@socketio.on('pull_code_change', namespace = '/codechanges')
+def getExistingCodeChanges(fileid):
+	
+			
 		
 def getProjects():
 	if request.method == 'POST':

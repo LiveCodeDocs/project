@@ -202,7 +202,7 @@ $(document).ready(function() {
 				"ch": testChangeArray[i]["to"]["ch"] + 1
 			};
 			var origin = myCodeMirror.getRange(from, to);
-			myCodeMirror.replaceRange(replacement, from, to, origin);
+			myCodeMirror.replaceRange(replacement, from, to, "+input");
 		}
 	};
 	//END TEST
