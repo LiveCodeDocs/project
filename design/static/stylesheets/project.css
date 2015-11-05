@@ -1,3 +1,8 @@
+body
+{
+	font-family: 'Signika', sans-serif;
+}
+
 .console-toggle {
 	background-color: #98AFC7;
 	position: fixed; 
@@ -34,7 +39,7 @@
 	line-height: 100px;
 }
 .file-list {
-	background-color: #EBEBE0;
+
 	position: fixed;
 	height: 530px;
 	width: 200px;
@@ -52,20 +57,6 @@
 	margin-right: 120px;
 }
 
-#class
-{
-	margin-right: 90px;
-}
-
-#class2
-{
-	margin-right: 90px;
-}
-
-#class3
-{
-	margin-right: 90px;
-}
 textarea
 {
 	resize: none;
@@ -74,6 +65,14 @@ textarea
 #html {
        text-align: center;
 }
+
+#project-files-list {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;	
+}
+
 /*#toolbar-nav
 {
 	position: absolute;

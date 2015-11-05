@@ -1,9 +1,32 @@
-#helpTitle
+body
+{
+
+	background-color: #d3d3d3;
+	font-family: 'Signika', sans-serif;
+
+}
+
+
+#aboutLabel
 {
 	text-align: center;
 }
 
-#helpLabel2
+#aboutLabel2
+{
+	text-align: center;
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
+#contactLabel
+{
+	text-align: center;
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
+#finalThanksLabel
 {
 	text-align: center;
 }

@@ -60,15 +60,15 @@ $(document).ready(function() {
 				$(".console-toggle").css("bottom", "0px");
 				$(".console").hide();
 				addConsoleHandler(false);
-				document.getElementById("files").style.height = "730px";
-				document.getElementById("text_editor_div").style.height = "730px";
+				document.getElementById("filesid").style.height = "730px";
+				document.getElementById("text_editor_div").style.height = "730px";	
 			});
 		} else {
 			$(".console-toggle").on("click", function() {
 				$(".console-toggle").css("bottom", "200px");
 				$(".console").show();
 				addConsoleHandler(true);
-				document.getElementById("files").style.height = "530px";
+				document.getElementById("filesid").style.height = "530px";
 				document.getElementById("text_editor_div").style.height = "530px";
 			});
 		}
@@ -202,7 +202,7 @@ $(document).ready(function() {
 				"ch": testChangeArray[i]["to"]["ch"] + 1
 			};
 			var origin = myCodeMirror.getRange(from, to);
-			myCodeMirror.replaceRange(replacement, from, to);
+			myCodeMirror.replaceRange(replacement, from, to, origin);
 		}
 	};
 	//END TEST
