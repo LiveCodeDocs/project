@@ -26,7 +26,11 @@ class TestCodeChanges(unittest.TestCase):
                             "this is line 5",
                             "this is line 6",
                             "this is line 7"]
-    
+        
+    def testGetCodeGetsCode(self):
+        expected = "this is line 1\nthis is line 2\nthis is line 3\nthis is line 4\nthis is line 5\nthis is line 6\nthis is line 7\n"
+        self.assertEqual(expected, self.code.getCode())
+        
     def testDequeueChangeRemovesChange(self):
         enqueueSomeChanges(self.code)
         initialLength = len(self.code.queueOfChanges)

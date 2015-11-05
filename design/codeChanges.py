@@ -10,6 +10,12 @@ class Code():
         self.linesOfCode = []
         self.queueOfChanges = []
         
+    def getCode(self):
+        codeStr = ""
+        for k in range(len(self.linesOfCode)):
+            codeStr = codeStr + self.linesOfCode[k] + "\n"
+        return codeStr
+        
     def enqueueChange(self, change):
         self.queueOfChanges.append(change)
         
