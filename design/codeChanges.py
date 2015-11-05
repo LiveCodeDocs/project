@@ -1,13 +1,14 @@
 '''
 @author: bonattt
 '''
+
 #from test.test_importlib.source.test_source_encoding import LineEndingTest
 class Code():
     
-    def __init__(self, fileID):
+    def __init__(self, codeStr, fileID):
         
         self.fileID = fileID
-        self.linesOfCode = []
+        self.linesOfCode = codeStr.split("\n")
         self.queueOfChanges = []
         
     def getCode(self):
@@ -15,6 +16,8 @@ class Code():
         for k in range(len(self.linesOfCode)):
             codeStr = codeStr + self.linesOfCode[k] + "\n"
         return codeStr
+    
+    
         
     def enqueueChange(self, change):
         self.queueOfChanges.append(change)
