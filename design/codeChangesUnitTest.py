@@ -18,7 +18,7 @@ def enqueueSomeChanges(code):
 class TestCodeChanges(unittest.TestCase):
     
     def setUp(self):
-        self.code = c.Code(0)
+        self.code = c.Code("", 0)
         self.code.linesOfCode = ["this is line 1",
                             "this is line 2",
                             "this is line 3",
