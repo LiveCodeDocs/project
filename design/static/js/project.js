@@ -2,12 +2,38 @@
 
 $(document).ready(function() {
 
-	var addEventListeners = function() {
+	var addEventListeners = function(myCodeMirror) {
 		$("#new-file-add-button").on("click", function() {
 			var filename = $("#new-file-name").val();
 			var projectId = 2;
 			addNewFile(filename, projectId);
 		});
+		$("#project-files-list").on("click", ".list-group-item", function() {
+			var fileId = $(this).attr("data-id");
+			setEditorText(fileId, myCodeMirror);
+		});
+	}
+
+	var setEditorText = function(fileId, myCodeMirror) {
+		$.ajax({
+			type: "GET",
+			url: "http://livecodedocs.csse.rose-hulman.edu:5000/getFileContent",
+			data: { "fileId": fileId },
+			success: function(data) {
+				var id;
+				for (id in data) {
+					if (data[id] != null) {
+						myCodeMirror.setValue(data[id]);
+					} else {
+						myCodeMirror.setValue("");
+					}
+				}
+				console.log("Successful content load: ", data);
+			},
+			error: function(data) {
+				console.log("ERROR: ", data);
+			}
+		});			
 	}
 
 	var addFilesHandler = function(isVisible) {
@@ -34,12 +60,16 @@ $(document).ready(function() {
 				$(".console-toggle").css("bottom", "0px");
 				$(".console").hide();
 				addConsoleHandler(false);
+				document.getElementById("files").style.height = "730px";
+				document.getElementById("text_editor_div").style.height = "730px";
 			});
 		} else {
 			$(".console-toggle").on("click", function() {
 				$(".console-toggle").css("bottom", "200px");
 				$(".console").show();
 				addConsoleHandler(true);
+				document.getElementById("files").style.height = "530px";
+				document.getElementById("text_editor_div").style.height = "530px";
 			});
 		}
 	}
@@ -85,15 +115,14 @@ $(document).ready(function() {
 			dataType: "json",
 			success: function(data) {
 				console.log(data);
-				//var id;
+				var id;
 				var file_list = $("#project-files-list");
 				while (file_list.children()[0])
 				{
 					file_list.children()[0].remove();
 				}
 				for (id in data) {
-					var html = "<li class='list-group-item' data-id=" + id + ">" + data[id] + "</li>";
-					//var html = "<li class='list-group-item' data-id=" + "somefuckingshit" + ">" + "returned"  + "</li>";
+					var html = "<button class='list-group-item' data-id=" + id + ">" + data[id] + "</button>";
 					$("#project-files-list").append(html);
 				}
 			},
@@ -136,12 +165,46 @@ $(document).ready(function() {
 	        mode: {name: "javascript", globalVars: true}
 	});
 
-	//TEST FOR CODEMIRROR CHANGES EVENT. NOT FINAL
+	//TEST FOR CODEMIRROR CHANGES EVENT AND REPLACE RANGE, NOT FINAL
+	var testChangeArray = [
+		{
+			"from": {
+				"ch": 0,
+				"line": 0
+			},
+			"to": {
+				"ch": 0,
+				"line": 0
+			},
+			"text": ["c"]
+		}
+	];
 	var testArray = [];
 	myCodeMirror.on("changes", function(myCodeMirror, changeArray) {
 		testArray.push(changeArray);
 		console.log(testArray);
 	});
+	$(".navbar-brand").on("click", function() {
+		updateCodeMirror(testChangeArray, myCodeMirror);
+		console.log("testChangeArray: ", testChangeArray);
+	});
+
+	var updateCodeMirror = function(testChangeArray, myCodeMirror) {
+		var i;
+		for (i in testChangeArray) {
+			var replacement = testChangeArray[i]["text"].join("");
+			var from = {
+				"line": testChangeArray[i]["from"]["line"],
+				"ch": testChangeArray[i]["from"]["ch"]
+			};
+			var to = {
+				"line": testChangeArray[i]["to"]["line"],
+				"ch": testChangeArray[i]["to"]["ch"] + 1
+			};
+			var origin = myCodeMirror.getRange(from, to);
+			myCodeMirror.replaceRange(replacement, from, to);
+		}
+	};
 	//END TEST
 
 	
