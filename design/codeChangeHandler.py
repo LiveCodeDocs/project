@@ -10,22 +10,32 @@ def checkOrMakeCodeStructure(fileid): #assumed fileid is an int
 	if fileid in codeStructures.keys():
 		requestedStruct = codeStructures[fileid]
 		return requestedStruct.getCode()
-	print "not found in dictionary"	
+	print 'not in dict'
 	cnx = mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
         cursor = cnx.cursor()
         cursor.callproc('GetFileContent', [fileid])
 	fileText = ""
         for result in cursor.stored_results():
-                fileText = result.fetchall()
+                fileText = result.fetchall()[0][fileid]
         cnx.close()
 	newCodeObject = Code(fileText, fileid)
 	codeStructures[fileid] = newCodeObject
 	return fileText
 
+def pullCodeChanges(fileid):
+	if fileid not in codeStructures.keys():
+		return False
+	codeStruct = codeStructures[fileid]		
+	return codeStruct.getCode()
 
-def main():
-	print checkOrMakeCodeStructure(1)
-
+#fileid - int of the file id
+#codeChanges
+def setCodeChanges(fileid, codeChanges):
+	if fileid not in codeStructures.keys():
+		return False
+	code
+	codeStruct = codeStructures[fileid]
+		
 
 if __name__ == "__main__":
 	main()

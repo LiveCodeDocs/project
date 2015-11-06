@@ -6,6 +6,7 @@ import sys
 import requests
 import json
 from flask.ext.cors import CORS
+from codeChangeHandler import *
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -36,10 +37,6 @@ def handlelogin():
 		cnx.commit()
 		cnx.close()
 	return "success"
-	
-@app.route('/')
-def openFile():
-	return
 	
 @app.route('/getProjectFiles', methods = ['GET'])
 def getProjectFiles():
@@ -88,9 +85,13 @@ def createNewFile():
 		cursor = cnx.cursor()
 		args = [fileName, projectID]
 		cursor.callproc('AddNewFile', args)
+		for result in cursor.stored_results():
+			content = result.fetchall()
 		cnx.commit()
 		cnx.close()
-	return "success"
+		fileid = content[0][0]
+		return jsonify({'fileid' : fileid})
+	return "failed"
 
 @app.route('/addProject', methods = ['POST'])
 def addProject():
@@ -117,8 +118,18 @@ def getCode():
 
 @socketio.on('pull_code_change', namespace = '/codechanges')
 def getExistingCodeChanges(fileid):
+	return pullCodeChanges(fileid)
+
+
+@socketio.on('push_code_changes', namespace = '/codechanges')
+def setCodeChanges(data):
+		print data
+		emit('incremenet response', {'data' : 'here'})
+
+@socketio.on('connect', namespace = '/codechanges')
+def beginEmit():
+        emit('my response', {'data' : 'Connected' })
 	
-			
 		
 def getProjects():
 	if request.method == 'POST':

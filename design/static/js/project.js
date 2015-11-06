@@ -1,12 +1,15 @@
 //config.extraPlugins = 'CodeMirror';
 
 $(document).ready(function() {
+	
+	var codeChangeSocket = io.connect("http://livecodedocs.csse.rose-hulman.edu:5000/codechanges");
+	//var runCodeSocket = io.connect("http://livecodedocs.csse.rose-hulman.edu:5000/code");
 
 	var addEventListeners = function(myCodeMirror) {
 		$("#new-file-add-button").on("click", function() {
 			var filename = $("#new-file-name").val();
 			var projectId = 2;
-			addNewFile(filename, projectId);
+			addNewFile(filename, projectId, myCodeMirror);
 		});
 		$("#project-files-list").on("click", ".list-group-item", function() {
 			var fileId = $(this).attr("data-id");
@@ -74,7 +77,7 @@ $(document).ready(function() {
 		}
 	}
 
-	var addNewFile = function(filename, projectId) {
+	var addNewFile = function(filename, projectId, myCodeMirror) {
 		if (filename == "") {
 			return;
 		}
@@ -92,6 +95,7 @@ $(document).ready(function() {
 				console.log("Data is: ", data);
 				//loadFiles(query[0]["projectId"]);
 				loadFiles(2);
+				setEditorText(data["fileid"], myCodeMirror);
 			},
 			error: function(data) {
 				console.log("Error: ", data);
@@ -205,6 +209,23 @@ $(document).ready(function() {
 			myCodeMirror.replaceRange(replacement, from, to, "+input");
 		}
 	};
+	
+	//NOT DONE
+	var getCodeChanges = function() {
+		codeChangeSocket.emit('pull_code_change', { data: currentFileId })
+	}
+
+	//NOT DONE
+	var sendCodeChanges = function() {
+		var changesArray = testArray;
+		//testArray = []; 
+		codeChangeSocket.emit('push_code_changes', { data: { "fileid": 24, "codeChangeArray": ["fuckyou"] }});
+		testArray = [];
+		setTimeout(sendCodeChanges, 5000);
+	}
+
+	//setTimeout(getCodeChanges, 1000);
+	setTimeout(sendCodeChanges, 1000);
 	//END TEST
 
 	
