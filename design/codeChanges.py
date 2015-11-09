@@ -15,9 +15,7 @@ class Code():
         codeStr = ""
         for k in range(len(self.linesOfCode)):
             codeStr = codeStr + self.linesOfCode[k] + "\n"
-        return codeStr
-    
-    
+        return codeStr  
         
     def enqueueChange(self, change):
         self.queueOfChanges.append(change)
@@ -33,7 +31,7 @@ class Code():
             self.applyChange(change)
         
     def applyChange(self, change):
-        if change.lineNumber >= len(self.linesOfCode) - 1:
+        if change[0]['from']['line'] >= len(self.linesOfCode) - 1:
             raise ChangeLineOutOfBoundsException()
         
         if change.type == Change.insert:
@@ -65,7 +63,7 @@ class Code():
         str1 = lineEdited[0 : change.index[0]]
         str2 = lineEdited[change.index[1] : ]
         self.linesOfCode[change.lineNumber] = str1 + str2
-        
+       
     def removeLineAt(self, lineNumber):
         secondLine = self.linesOfCode[lineNumber + 1]
         self.linesOfCode.remove(secondLine)
@@ -97,8 +95,14 @@ class Change():
         self.lineNumber = lineNo
         self.index = index
         self.string = string
-        self.type = changeType
-        
+	if string == "":
+		self.type = newLine
+	else: 
+	        self.type = changeType
+    
+    def __repr__(self):
+	return 'lineNo: ' + str(self.lineNo) + ', string: ' + self.string  + ', index: ' + str(index) + ', type: ' + str(type)	
+ 
     def __checkInputs__(self, lineNo, index, string, changeType):
         if not type(lineNo) == int:
             raise ChangeIncorrectConstructorArgument("lineNo", lineNo)

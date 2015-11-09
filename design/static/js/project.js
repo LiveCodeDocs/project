@@ -1,9 +1,6 @@
 //config.extraPlugins = 'CodeMirror';
 
 $(document).ready(function() {
-	
-	var codeChangeSocket = io.connect("http://livecodedocs.csse.rose-hulman.edu:5000/codechanges");
-	//var runCodeSocket = io.connect("http://livecodedocs.csse.rose-hulman.edu:5000/code");
 
 	var addEventListeners = function(myCodeMirror) {
 		$("#new-file-add-button").on("click", function() {
@@ -25,10 +22,13 @@ $(document).ready(function() {
 			success: function(data) {
 				var id;
 				for (id in data) {
+					currentFileId = fileId;
 					if (data[id] != null) {
 						myCodeMirror.setValue(data[id]);
+						codeChangeArray.pop();
 					} else {
 						myCodeMirror.setValue("");
+						codeChangeArray.pop();
 					}
 				}
 				console.log("Successful content load: ", data);
@@ -183,10 +183,10 @@ $(document).ready(function() {
 			"text": ["c"]
 		}
 	];
-	var testArray = [];
+	var codeChangeArray = [];
 	myCodeMirror.on("changes", function(myCodeMirror, changeArray) {
-		testArray.push(changeArray);
-		console.log(testArray);
+		codeChangeArray.push(changeArray);
+		console.log(codeChangeArray);
 	});
 	$(".navbar-brand").on("click", function() {
 		updateCodeMirror(testChangeArray, myCodeMirror);
@@ -210,22 +210,69 @@ $(document).ready(function() {
 		}
 	};
 	
-	//NOT DONE
+	//TODO: REPLACE WITH AJAX
+	//var getCodeChanges = function() {
+	//	codeChangeSocket.emit('pull_code_change', { data: currentFileId })
+	//}
 	var getCodeChanges = function() {
-		codeChangeSocket.emit('pull_code_change', { data: currentFileId })
+		var fileid = currentFileId;
+		if (fileid == -1) {
+			setTimeout(getCodeChanges, 5000);
+			return;
+		}
+		$.ajax({
+			type: "GET",
+			url: "http://livecodedocs.csse.rose-hulman.edu:5000/clientPullCode",
+			data: { "fileid": fileid },
+			success: function(data) {
+				console.log("SUCCESSFUL PULL", data);
+				setTimeout(getCodeChanges, 5000);
+				var cursorLocation = myCodeMirror.getCursor();
+				var id;
+				for (var id in data) {
+					if (data[id] != null) {
+						myCodeMirror.setValue(data[id]);
+						myCodeMirror.setCursor(cursorLocation);
+						codeChangeArray.pop();
+					} else {
+						myCodeMirror.setValue("");
+						codeChangeArray.pop();
+					}
+				}
+			},
+			error: function(data) {
+				console.log("ERROR: ", data);
+			}
+		});
 	}
+			 
 
-	//NOT DONE
+	//TODO: REPLACE WITH AJAX
 	var sendCodeChanges = function() {
-		var changesArray = testArray;
-		//testArray = []; 
-		codeChangeSocket.emit('push_code_changes', { data: { "fileid": 24, "codeChangeArray": ["fuckyou"] }});
-		testArray = [];
-		setTimeout(sendCodeChanges, 5000);
+		var testData = codeChangeArray;
+		codeChangeArray = [];
+		if (testData.length == 0 || currentFileId == -1) {
+			setTimeout(sendCodeChanges, 5000);
+			return;
+		}
+		$.ajax({
+			type: "POST",
+			url: "http://livecodedocs.csse.rose-hulman.edu:5000/updateCode",
+			data: JSON.stringify({"changes": testData, "fileid": currentFileId}, null, '\t'),
+			contentType: "application/json; charset-utf-8",
+			success: function(data) {
+				setTimeout(sendCodeChanges, 5000);
+			},
+			error: function(error) {
+				console.log("error getting code changes: " + error);
+				setTimeout(sendCodeChanges, 5000);
+			}
+		});
 	}
 
-	//setTimeout(getCodeChanges, 1000);
-	setTimeout(sendCodeChanges, 1000);
+	//TODO: IMPLEMENT CODE FOR THESE CALLS
+	setTimeout(getCodeChanges, 5000);
+	setTimeout(sendCodeChanges, 5000);
 	//END TEST
 
 	
@@ -242,6 +289,7 @@ $(document).ready(function() {
 	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../"});
 	document.getElementById('help').addEventListener("click", function () {window.location.href = "../help"});
 
+	//TODO: REMOVE OR UPDATE
 	// var editor = CodeMirror.fromTextArea(document.getElementById("text_editor"), {
 	//     // lineNumbers: true,
 	//     // value: "function myScript(){return 100;}\n"

@@ -1,5 +1,4 @@
 from flask import Flask, render_template, url_for, session, request, jsonify
-from flask.ext.socketio import SocketIO, emit
 from runCode import runCode
 import mysql.connector
 import sys
@@ -10,7 +9,6 @@ from codeChangeHandler import *
 
 app = Flask(__name__)
 cors = CORS(app)
-socketio = SocketIO(app)
 
 app.debug = True
 
@@ -56,14 +54,10 @@ def getFileContent():
 	if request.method == 'GET':
 		cnx = mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
 		fileId = request.args.get('fileId')
-		cursor = cnx.cursor()
-		args = [fileId]
-		cursor.callproc('GetFileContent', args)
-		for result in cursor.stored_results():
-			content = result.fetchall()
-		cnx.close()
-	return jsonify(content)
-	
+		content = checkOrMakeCodeStructure(fileId)
+		return jsonify(content)
+	return "error - incorrect request type"	
+
 @app.route('/saveFile', methods = ['POST'])
 def saveFile():
 	if request.method == 'POST':
@@ -116,19 +110,20 @@ def getCode():
 		returnVal = runCode(code)
 		return returnVal
 
-@socketio.on('pull_code_change', namespace = '/codechanges')
-def getExistingCodeChanges(fileid):
-	return pullCodeChanges(fileid)
+#TODO: Update to take AJAX
+@app.route('/clientPullCode', methods = ['GET'])
+def getExistingCodeChanges():
+	if request.method == 'GET':
+		codeToSend = pullCodeChanges(request.args.get('fileid'))
+		return jsonify({'code' : codeToSend})
+	return 'error - incorrect request method on client pull code'
 
-
-@socketio.on('push_code_changes', namespace = '/codechanges')
-def setCodeChanges(data):
-		print data
-		emit('incremenet response', {'data' : 'here'})
-
-@socketio.on('connect', namespace = '/codechanges')
-def beginEmit():
-        emit('my response', {'data' : 'Connected' })
+@app.route('/updateCode', methods = ['POST'])
+def makeCodeChanges():
+	if request.method == 'POST':
+		setCodeChanges(request.json['fileid'], request.json['changes'])
+		return 'success'
+	return 'error - incorrect request type on update code'
 	
 		
 def getProjects():
