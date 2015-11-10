@@ -1,4 +1,6 @@
 from codeChanges import *
+import json
+from flask import jsonify
 import mysql.connector
 
 codeStructures = {}
@@ -9,20 +11,21 @@ codeStructures = {}
 
 def checkOrMakeCodeStructure(fileid): #assumed fileid is an int
 	if fileid in codeStructures.keys():
-		requestedStruct = codeStructures[fileid]
-		return requestedStruct.getCode()
+		codeBody = codeStructures[fileid].getCode()
+		return jsonify({'code': codeBody})
 	cnx = mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
         cursor = cnx.cursor()
         cursor.callproc('GetFileContent', [fileid])
 	fileText = ""
         for result in cursor.stored_results():
                 fileJSON = result.fetchall()
+		print fileJSON
 		fileText = fileJSON[0][1]
         cnx.commit()
 	cnx.close()
 	newCodeObject = Code(fileText, fileid)
 	codeStructures[fileid] = newCodeObject
-	return fileJSON
+	return jsonify(fileJSON)
 
 def pullCodeChanges(fileid):
 	if fileid not in codeStructures.keys():
@@ -36,15 +39,16 @@ def setCodeChanges(fileid, codeChanges):
 	if fileid not in codeStructures.keys():
 		return False #shouldnt be sending code changes to a file that is not currently open - something probably broke
 	for change in codeChanges:
+		#print change
 		changeDict = parseRawChange(str(change))
 		changeList = setupChangeObject(changeDict)
 		if len(changeList) == 3:
 			print changeList
-			codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2]))
+			#codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2]))
 		else:
 			print changeList
-			codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2], changeList[3]))
-	codeStructures[fileid].handleChanges()
+			#codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2], changeList[3]))
+	#codeStructures[fileid].handleChanges()
 	
 def parseRawChange(dump):
     parsedChangeDict = {}
@@ -76,8 +80,10 @@ def parseRawChange(dump):
             parsedChangeDict['inserted_text'] = inserted_text
         if changeList[0] == 'u\'to\'':
             if changeList[1] == 'u\'line\'':
-                lineList.insert(0, changeList[2])
-                
+                lineList.insert(0, int(changeList[2]))
+        if changeList[0] ==  'u\'from\'':
+	    if changeList[1] == 'u\'line\'':
+		lineList.insert(0, int(changeList[2]))
 
     parsedChangeDict['line_range'] = lineList
     parsedChangeDict['index_range'] = indexList
@@ -104,11 +110,6 @@ def setupChangeObject(parsedChangeDict):
         changeObjectList[2] = parsedChangeDict['index_range'][0]
     return changeObjectList        
     
-
-
-
-
-
 
 if __name__ == "__main__":
 	main()

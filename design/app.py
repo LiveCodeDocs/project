@@ -55,7 +55,7 @@ def getFileContent():
 		cnx = mysql.connector.connect(user = 'root', password = 'LiveCodeDocs', host = 'localhost', database = 'LiveCodeDocs')
 		fileId = request.args.get('fileId')
 		content = checkOrMakeCodeStructure(fileId)
-		return jsonify(content)
+		return content
 	return "error - incorrect request type"	
 
 @app.route('/saveFile', methods = ['POST'])

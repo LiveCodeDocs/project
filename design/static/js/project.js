@@ -94,7 +94,7 @@ $(document).ready(function() {
 			success: function(data) {
 				console.log("Data is: ", data);
 				//loadFiles(query[0]["projectId"]);
-				loadFiles(2);
+				//loadFiles(2);
 				setEditorText(data["fileid"], myCodeMirror);
 			},
 			error: function(data) {
@@ -105,6 +105,7 @@ $(document).ready(function() {
 
 	var loadFiles = function(projectId) {
 		console.log("LOADING FILES");
+		setTimeout(function() { loadFiles(2); }, 5000);
 		var query = [{
 			"projectid": projectId
 		}];
