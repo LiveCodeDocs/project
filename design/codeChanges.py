@@ -84,9 +84,10 @@ class Code():
         while len(self.queueOfChanges) > 0:
             change = self.dequeueChange()
             self.applyChange(change)
+        return True
         
     def applyChange(self, change):
-        if change.lineNumber >= len(self.linesOfCode) - 1:
+        if change.lineNumber >= len(self.linesOfCode):
             raise ChangeLineOutOfBoundsException()
         
         if change.type == Change.insert:

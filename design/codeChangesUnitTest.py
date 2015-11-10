@@ -107,14 +107,6 @@ class TestCodeChanges(unittest.TestCase):
             self.assertEqual(expected[k], self.code.linesOfCode[k])
         
     def testDeleteMultipleLinesDeletesMultipleLines1(self):
-        self.code.linesOfCode = ["this is line 1",
-                            "this is line 2",
-                            "this is line 3",
-                            "this is line 4",
-                            "this is line 5",
-                            "this is line 6",
-                            "this is line 7"]
-        
         expected  = ["this is line 1",
                     "this is line 2",
                     "this is line 5",
@@ -301,6 +293,66 @@ class TestCodeChanges(unittest.TestCase):
         change = codeChanges.Change(4, codeChanges.Change.deleteLine)
         self.code.applyChange(change)
         self.assertEqual(initialLength - 1, len(self.code.linesOfCode))
+        
+    def testBensCode01(self):
+        expected = ["print 'hello world'"]
+         
+        code = codeChanges.Code("print 'hello world'a", 1)
+        change = codeChanges.Change(0, 0, 19, 'a')
+        code.enqueueChange(change)
+        code.handleChanges()
+#         print("expected: ", end="")
+#         print(expected)
+#         print("actual: ", end="")
+#         print(code.linesOfCode)
+        self.assertEqual(expected, code.linesOfCode)
+         
+     
+    def testBensCode02(self):
+        expected = ["print 'hello world'"]
+         
+        code = codeChanges.Code("print 'hello world'a", 2)
+        change = codeChanges.Change((0, 0), 1, (19, 20))
+        code.enqueueChange(change)
+        code.handleChanges()
+         
+        self.assertEqual(expected, code.linesOfCode)
+         
+    def testBensCode03(self):
+        expected = ["print 'hello world'", "a"]
+          
+        code = codeChanges.Code("print 'hello world'", 3)
+        code.enqueueChange(codeChanges.Change(0, 2, 19))
+        code.handleChanges()
+        code.enqueueChange(codeChanges.Change(1, 0, 0, 'a'))
+        code.handleChanges()
+          
+        self.assertEqual(expected, code.linesOfCode)
+         
+    def testBensCode04(self):
+        expected = ["print 'hello world'", "aasdasda"]
+         
+        code = codeChanges.Code("print 'hello world'\na", 4)
+        code.enqueueChange(codeChanges.Change(1, 0, 1, 'a'))
+        code.enqueueChange(codeChanges.Change(1, 0, 2, 's'))
+        code.enqueueChange(codeChanges.Change(1, 0, 3, 'd'))
+        code.enqueueChange(codeChanges.Change(1, 0, 4, 'a'))
+        code.enqueueChange(codeChanges.Change(1, 0, 5, 's'))
+        code.enqueueChange(codeChanges.Change(1, 0, 6, 'd'))
+        code.enqueueChange(codeChanges.Change(1, 0, 7, 'a'))
+        code.handleChanges()
+         
+        self.assertEqual(expected, code.linesOfCode)
+         
+    def testBensCode05(self):
+        expected = ["print "]
+         
+        code = codeChanges.Code("print 'hello world'\naasdasda", 5)
+        code.enqueueChange(codeChanges.Change((0, 1), 1, (6, 8)))
+        code.handleChanges()
+         
+        self.assertEqual(expected, code.linesOfCode)
+        
         
 if __name__ == '__main__':
     unittest.main()
