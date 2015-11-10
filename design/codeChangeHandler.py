@@ -36,9 +36,79 @@ def setCodeChanges(fileid, codeChanges):
 	if fileid not in codeStructures.keys():
 		return False #shouldnt be sending code changes to a file that is not currently open - something probably broke
 	for change in codeChanges:
-		print change
-		#codeStructures[fileid].enqueueChange(change)
-	#codeStructures[fileid].handleChanges()
+		changeDict = parseRawChange(str(change))
+		changeList = setupChangeObject(changeDict)
+		if len(changeList) == 3:
+			print changeList
+			codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2]))
+		else:
+			print changeList
+			codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2], changeList[3]))
+	codeStructures[fileid].handleChanges()
 	
+def parseRawChange(dump):
+    parsedChangeDict = {}
+    lineList = []
+    indexList = []
+
+    cleaned = dump[1:len(dump) - 1]
+    cleaned = cleaned.replace('{', '')
+    cleaned = cleaned.replace('}', '')
+    cleaned = cleaned.replace(' ', '')
+    cleanedList = cleaned.split(',')
+    for item in cleanedList:
+        item = item.replace('"', '')
+        changeList = item.split(':')
+#        print changeList
+        if changeList[0] == 'u\'origin\'':
+            parsedChangeDict['change_type'] = changeList[1][3: len(changeList[1]) - 1]
+        if changeList[0] == 'u\'line\'':
+            lineList.insert(0, int(changeList[1]))
+        if changeList[0] == 'u\'ch\'':
+            indexList.insert(0, int(changeList[1]))
+#         not needed now - keeping the code in case this is necessary later
+#         if changeList[0] == 'removed':
+#             removed_text = changeList[1].replace('[', '')
+#             removed_text = removed_text.replace(']', '')
+#             parsedChangeDict['removed_text'] = removed_text
+        if changeList[0] == 'u\'text\'':
+            inserted_text = changeList[1][3: len(changeList[1]) - 2]
+            parsedChangeDict['inserted_text'] = inserted_text
+        if changeList[0] == 'u\'to\'':
+            if changeList[1] == 'u\'line\'':
+                lineList.insert(0, changeList[2])
+                
+
+    parsedChangeDict['line_range'] = lineList
+    parsedChangeDict['index_range'] = indexList
+    return parsedChangeDict
+
+def setupChangeObject(parsedChangeDict):
+    changeObjectList = []
+    if parsedChangeDict['change_type'] == 'delete':
+        changeObjectList = ['', '', '']
+        changeObjectList[1] = Change.delete
+        changeObjectList[0] = (parsedChangeDict['line_range'][0], parsedChangeDict['line_range'][1])
+        changeObjectList[2] = (parsedChangeDict['index_range'][0], parsedChangeDict['index_range'][1])
+    if parsedChangeDict['change_type'] == 'input':
+        if parsedChangeDict['inserted_text'] == '':
+            changeObjectList = ['', '', '']
+            changeObjectList[1] = Change.newLine
+            
+        else:
+            changeObjectList = ['', '', '', '']
+            changeObjectList[1] = Change.insert
+            changeObjectList[3] = parsedChangeDict['inserted_text']
+            
+        changeObjectList[0] = int(parsedChangeDict['line_range'][0])
+        changeObjectList[2] = parsedChangeDict['index_range'][0]
+    return changeObjectList        
+    
+
+
+
+
+
+
 if __name__ == "__main__":
 	main()
