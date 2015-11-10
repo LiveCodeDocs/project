@@ -67,22 +67,12 @@ class Code():
         self.handleChanges()
                     
     def _expandMultiLineDelete_(self, change):
-        line = change.lineNumber[1]
-        index = (0, change.index[1])
-        currentChange = Change(line, Change.delete, index)
-        self.enqueueChange(currentChange)
 
-        for k in range(change.lineNumber[1]-1, change.lineNumber[0], -1):
+        for k in range(change.lineNumber[0], change.lineNumber[1]):
             index = (0, len(self.linesOfCode[k]))
             currentChange = Change(k, Change.delete, index)
             self.enqueueChange(currentChange)
-        
-        line = change.lineNumber[0]
-        index = (change.index[0], len(self.linesOfCode[change.lineNumber[0]]))
-        currentChange = Change(line, Change.delete, index)
-        self.enqueueChange(currentChange)
-        
-        for k in range(change.lineNumber[0], change.lineNumber[1]+1):
+        for k in range(change.lineNumber[0], change.lineNumber[1]):
             self.enqueueChange(Change(k, Change.deleteLine))
         
     def dequeueChange(self):
