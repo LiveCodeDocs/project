@@ -92,9 +92,6 @@ $(document).ready(function() {
 			data: JSON.stringify(query, null, '\t'),			
 			contentType: "application/json; charset=utf-8",
 			success: function(data) {
-				console.log("Data is: ", data);
-				//loadFiles(query[0]["projectId"]);
-				//loadFiles(2);
 				setEditorText(data["fileid"], myCodeMirror);
 			},
 			error: function(data) {
@@ -104,7 +101,6 @@ $(document).ready(function() {
 	}
 
 	var loadFiles = function(projectId) {
-		console.log("LOADING FILES");
 		setTimeout(function() { loadFiles(2); }, 5000);
 		var query = [{
 			"projectid": projectId
@@ -119,7 +115,6 @@ $(document).ready(function() {
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			success: function(data) {
-				console.log(data);
 				var id;
 				var file_list = $("#project-files-list");
 				while (file_list.children()[0])
@@ -170,51 +165,12 @@ $(document).ready(function() {
 	        mode: {name: "javascript", globalVars: true}
 	});
 
-	//TEST FOR CODEMIRROR CHANGES EVENT AND REPLACE RANGE, NOT FINAL
-	var testChangeArray = [
-		{
-			"from": {
-				"ch": 0,
-				"line": 0
-			},
-			"to": {
-				"ch": 0,
-				"line": 0
-			},
-			"text": ["c"]
-		}
-	];
 	var codeChangeArray = [];
 	myCodeMirror.on("changes", function(myCodeMirror, changeArray) {
 		codeChangeArray.push(changeArray);
-		console.log(codeChangeArray);
 	});
-	$(".navbar-brand").on("click", function() {
-		updateCodeMirror(testChangeArray, myCodeMirror);
-		console.log("testChangeArray: ", testChangeArray);
-	});
-
-	var updateCodeMirror = function(testChangeArray, myCodeMirror) {
-		var i;
-		for (i in testChangeArray) {
-			var replacement = testChangeArray[i]["text"].join("");
-			var from = {
-				"line": testChangeArray[i]["from"]["line"],
-				"ch": testChangeArray[i]["from"]["ch"]
-			};
-			var to = {
-				"line": testChangeArray[i]["to"]["line"],
-				"ch": testChangeArray[i]["to"]["ch"] + 1
-			};
-			var origin = myCodeMirror.getRange(from, to);
-			myCodeMirror.replaceRange(replacement, from, to, "+input");
-		}
-	};
 	
-	//TODO: REPLACE WITH AJAX
-	//var getCodeChanges = function() {
-	//	codeChangeSocket.emit('pull_code_change', { data: currentFileId })
-	//}
+	//DONE: REPLACE WITH AJAX
 	var getCodeChanges = function() {
 		var fileid = currentFileId;
 		if (fileid == -1) {
@@ -248,7 +204,7 @@ $(document).ready(function() {
 	}
 			 
 
-	//TODO: REPLACE WITH AJAX
+	//DONE: REPLACE WITH AJAX
 	var sendCodeChanges = function() {
 		var testData = codeChangeArray;
 		codeChangeArray = [];
@@ -271,7 +227,7 @@ $(document).ready(function() {
 		});
 	}
 
-	//TODO: IMPLEMENT CODE FOR THESE CALLS
+	//DONE: IMPLEMENT CODE FOR THESE CALLS
 	setTimeout(getCodeChanges, 5000);
 	setTimeout(sendCodeChanges, 5000);
 	//END TEST
@@ -290,11 +246,5 @@ $(document).ready(function() {
 	document.getElementById('logOutButton').addEventListener("click", function () {window.location.href = "../"});
 	document.getElementById('help').addEventListener("click", function () {window.location.href = "../help"});
 
-	//TODO: REMOVE OR UPDATE
-	// var editor = CodeMirror.fromTextArea(document.getElementById("text_editor"), {
-	//     // lineNumbers: true,
-	//     // value: "function myScript(){return 100;}\n"
-	//    	//viewportMargin: 25
-	// });
 
 });

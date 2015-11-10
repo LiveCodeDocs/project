@@ -19,7 +19,6 @@ def checkOrMakeCodeStructure(fileid): #assumed fileid is an int
 	fileText = ""
         for result in cursor.stored_results():
                 fileJSON = result.fetchall()
-		print fileJSON
 		fileText = fileJSON[0][1]
         cnx.commit()
 	cnx.close()
@@ -43,12 +42,15 @@ def setCodeChanges(fileid, codeChanges):
 		changeDict = parseRawChange(str(change))
 		changeList = setupChangeObject(changeDict)
 		if len(changeList) == 3:
-			print changeList
-			#codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2]))
+			codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2]))
+			done = False
+			while not done:
+				done = codeStructures[fileid].handleChanges()
 		else:
-			print changeList
-			#codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2], changeList[3]))
-	#codeStructures[fileid].handleChanges()
+			codeStructures[fileid].enqueueChange(Change(changeList[0], changeList[1], changeList[2], changeList[3]))
+			done = False
+			while not done:
+				done = codeStructures[fileid].handleChanges()
 	
 def parseRawChange(dump):
     parsedChangeDict = {}
