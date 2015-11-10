@@ -67,9 +67,19 @@ class Code():
         self.handleChanges()
                     
     def _expandMultiLineDelete_(self, change):
+        
+        if change.lineNumber[0] == change.lineNumber[1]:
+            self.enqueueChange(Change(change.lineNumber[0], change.type, change.index, change.string))
+            return
 
-        for k in range(change.lineNumber[0], change.lineNumber[1]):
-            index = (0, len(self.linesOfCode[k]))
+        for k in range(change.lineNumber[0], change.lineNumber[1]+1):
+            if k == change.lineNumber[0]:
+                index = (change.index[0], len(self.linesOfCode[k]))
+            elif k == change.lineNumber[1]:
+                index = (0, change.index[1])
+            else:
+                index = (0, len(self.linesOfCode[k]))
+                
             currentChange = Change(k, Change.delete, index)
             self.enqueueChange(currentChange)
         for k in range(change.lineNumber[0], change.lineNumber[1]):

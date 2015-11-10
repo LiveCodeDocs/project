@@ -295,9 +295,9 @@ class TestCodeChanges(unittest.TestCase):
         self.assertEqual(initialLength - 1, len(self.code.linesOfCode))
         
     def testBensCode01(self):
-        expected = ["print 'hello world'"]
+        expected = ["print 'hello world'a"]
          
-        code = codeChanges.Code("print 'hello world'a", 1)
+        code = codeChanges.Code("print 'hello world'", 1)
         change = codeChanges.Change(0, 0, 19, 'a')
         code.enqueueChange(change)
         code.handleChanges()
