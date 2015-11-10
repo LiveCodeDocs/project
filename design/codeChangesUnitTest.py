@@ -14,6 +14,10 @@ def enqueueSomeChanges(code):
     code.enqueueChange(change1)
     code.enqueueChange(change2)
     code.enqueueChange(change3)
+    
+def printLinesOfCode(loc):
+    for k in range(len (loc)):
+        print(loc[k])
 
 class TestCodeChanges(unittest.TestCase):
     
@@ -26,6 +30,122 @@ class TestCodeChanges(unittest.TestCase):
                             "this is line 5",
                             "this is line 6",
                             "this is line 7"]
+        
+    def testInsertMultipleLinesInsertsMultipleLinesEndOfALine(self):
+        expected  = ["this is line 1",
+                    "this is line 2",
+                    "this is line 3-- edit",  # 2
+                    "still editing",    # 3
+                    "-- ",        # 4
+                    "this is line 4",
+                    "this is line 5",
+                    "this is line 6",
+                    "this is line 7"]
+        change = codeChanges.Change((2,4), codeChanges.Change.insert, 14, "-- edit\nstill editing\n-- ")
+        self.code.enqueueChange(change)
+        self.code.handleChanges()
+        
+#         print("INSERT")
+#         print("expected: ")
+#         printLinesOfCode(expected)
+#         print("\nactual: ")
+#         printLinesOfCode(self.code.linesOfCode)
+        
+        self.assertEqual(len(expected), len(self.code.linesOfCode))
+        
+        for k in range(len(expected)):
+            self.assertEqual(expected[k], self.code.linesOfCode[k])
+        
+    def testInsertMultipleLinesInsertsMultipleLinesMiddleOfALine(self):
+        expected  = ["this is line 1",
+                    "this is line 2",
+                    "this is -- edit",  # 2
+                    "still editing",    # 3
+                    "-- line 3",        # 4
+                    "this is line 4",
+                    "this is line 5",
+                    "this is line 6",
+                    "this is line 7"]
+        change = codeChanges.Change((2,4), codeChanges.Change.insert, 8, "-- edit\nstill editing\n-- ")
+        self.code.enqueueChange(change)
+        self.code.handleChanges()
+        
+#         print("INSERT")
+#         print("expected: ")
+#         printLinesOfCode(expected)
+#         print("\nactual: ")
+#         printLinesOfCode(self.code.linesOfCode)
+        
+        self.assertEqual(len(expected), len(self.code.linesOfCode))
+        
+        for k in range(len(expected)):
+            self.assertEqual(expected[k], self.code.linesOfCode[k])
+        
+    def testInsertMultipleLinesInsertsMultipleLinesBeginningOfALine(self):
+        expected  = ["this is line 1",
+                    "this is line 2",
+                    "-- edit",  # 2
+                    "still editing",    # 3
+                    "-- this is line 3",        # 4
+                    "this is line 4",
+                    "this is line 5",
+                    "this is line 6",
+                    "this is line 7"]
+        change = codeChanges.Change((2,4), codeChanges.Change.insert, 0, "-- edit\nstill editing\n-- ")
+        self.code.enqueueChange(change)
+        self.code.handleChanges()
+        
+#         print("INSERT")
+#         print("expected: ")
+#         printLinesOfCode(expected)
+#         print("\nactual: ")
+#         printLinesOfCode(self.code.linesOfCode)
+        
+        self.assertEqual(len(expected), len(self.code.linesOfCode))
+        
+        for k in range(len(expected)):
+            self.assertEqual(expected[k], self.code.linesOfCode[k])
+        
+    def testDeleteMultipleLinesDeletesMultipleLines1(self):
+        self.code.linesOfCode = ["this is line 1",
+                            "this is line 2",
+                            "this is line 3",
+                            "this is line 4",
+                            "this is line 5",
+                            "this is line 6",
+                            "this is line 7"]
+        
+        expected  = ["this is line 1",
+                    "this is line 2",
+                    "this is line 5",
+                    "this is line 6",
+                    "this is line 7"]
+        change = codeChanges.Change((2,4), codeChanges.Change.delete, (0, 0))
+        self.code.enqueueChange(change)
+        self.code.handleChanges()
+        
+        print("DELETE")
+        print("expected: ")
+        printLinesOfCode(expected)
+        print("\nactual: ")
+        printLinesOfCode(self.code.linesOfCode)
+        
+        self.assertEqual(expected, self.code.linesOfCode)
+    
+    def testRemoveFromZeroToZeroRemovesNothing(self):
+        expected = ["this is line 1",
+                    "this is line 2",
+                    "this is line 3",
+                    "this is line 4",
+                    "this is line 5",
+                    "this is line 6",
+                    "this is line 7"]
+        change = codeChanges.Change(2, codeChanges.Change.delete, (0,0))
+        self.code.enqueueChange(change)
+        self.code.handleChanges()
+        self.assertEqual(len(expected), len(self.code.linesOfCode))
+        for k in range(len(expected)):
+            self.assertEqual(expected[k], self.code.linesOfCode[k])
         
     def testGetCodeGetsCode(self):
         expected = "this is line 1\nthis is line 2\nthis is line 3\nthis is line 4\nthis is line 5\nthis is line 6\nthis is line 7\n"

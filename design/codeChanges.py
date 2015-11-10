@@ -10,15 +10,80 @@ class Code():
         self.fileID = fileID
         self.linesOfCode = codeStr.split("\n")
         self.queueOfChanges = []
+        self.exitFlag = False
+        
+    def keepCodeUpToDate(self):
+        while not self.exitFlag:
+            self.handleChanges()
         
     def getCode(self):
         codeStr = ""
         for k in range(len(self.linesOfCode)):
             codeStr = codeStr + self.linesOfCode[k] + "\n"
-        return codeStr  
+        return codeStr
         
     def enqueueChange(self, change):
-        self.queueOfChanges.append(change)
+        if type(change.lineNumber) == tuple:
+            self._expandMultiLinedChange_(change)
+        else:
+            self.queueOfChanges.append(change)
+        
+    def _expandMultiLinedChange_(self, change):
+
+        if change.type == Change.insert:
+            if type(change.index) != int:
+                raise ChangeIncorrectArgument("index should be int for multiple line insert: ", change.index)
+            self._expandMultiLineInsert_(change)
+        if change.type == Change.delete:
+            if type(change.index) != tuple:
+                raise ChangeIncorrectArgument("index should be tuple for multiple line delete: ", change.index)
+            self._expandMultiLineDelete_(change)
+        if change.type == Change.deleteLine:
+            raise InvalidCaseForTupleTypeLineNumber()
+        if change.type == Change.newLine:
+            raise InvalidCaseForTupleTypeLineNumber()
+            
+    def _expandMultiLineInsert_(self, change):
+        self.handleChanges()
+        insertedLines = str.split(change.string, "\n")
+        for k in range(change.lineNumber[0], change.lineNumber[1]):
+#             if k == change.lineNumber[0]:
+#                 index = change.index
+#             else:
+#                 index = 0
+            self.enqueueChange(Change(change.lineNumber[0], Change.newLine, change.index))
+
+        self.handleChanges()
+
+        for k in range(change.lineNumber[0], change.lineNumber[1]+1):
+            string = insertedLines[k - change.lineNumber[0]]
+            
+            if k == change.lineNumber[0]:
+                index = change.index
+            else:
+                index = 0
+            self.enqueueChange(Change(k, Change.insert, index, string))
+            
+        self.handleChanges()
+                    
+    def _expandMultiLineDelete_(self, change):
+        line = change.lineNumber[1]
+        index = (0, change.index[1])
+        currentChange = Change(line, Change.delete, index)
+        self.enqueueChange(currentChange)
+
+        for k in range(change.lineNumber[1]-1, change.lineNumber[0], -1):
+            index = (0, len(self.linesOfCode[k]))
+            currentChange = Change(k, Change.delete, index)
+            self.enqueueChange(currentChange)
+        
+        line = change.lineNumber[0]
+        index = (change.index[0], len(self.linesOfCode[change.lineNumber[0]]))
+        currentChange = Change(line, Change.delete, index)
+        self.enqueueChange(currentChange)
+        
+        for k in range(change.lineNumber[0], change.lineNumber[1]+1):
+            self.enqueueChange(Change(k, Change.deleteLine))
         
     def dequeueChange(self):
         val = self.queueOfChanges[0]
@@ -31,7 +96,7 @@ class Code():
             self.applyChange(change)
         
     def applyChange(self, change):
-        if change[0]['from']['line'] >= len(self.linesOfCode) - 1:
+        if change.lineNumber >= len(self.linesOfCode) - 1:
             raise ChangeLineOutOfBoundsException()
         
         if change.type == Change.insert:
@@ -56,14 +121,17 @@ class Code():
         self.linesOfCode[change.lineNumber] = "".join(list1 + list2)
     
     def _applyRemove_(self, change):
+        if type(change.lineNumber) == tuple:
+            self._applyRemoveOnMultipleLines_(change)
+            return
         lineEdited = self.linesOfCode[change.lineNumber]
-        if change.index[0] < 0 or change.index[1] >= len(lineEdited):
-            raise ChangeIndexOutOfBoundsException()
+#         if change.index[0] < 0 or change.index[1] >= len(lineEdited):
+#             raise ChangeIndexOutOfBoundsException()
         
         str1 = lineEdited[0 : change.index[0]]
         str2 = lineEdited[change.index[1] : ]
         self.linesOfCode[change.lineNumber] = str1 + str2
-       
+        
     def removeLineAt(self, lineNumber):
         secondLine = self.linesOfCode[lineNumber + 1]
         self.linesOfCode.remove(secondLine)
@@ -95,23 +163,21 @@ class Change():
         self.lineNumber = lineNo
         self.index = index
         self.string = string
-	if string == "":
-		self.type = newLine
-	else: 
-	        self.type = changeType
+        self.type = changeType
     
     def __repr__(self):
-	return 'lineNo: ' + str(self.lineNo) + ', string: ' + self.string  + ', index: ' + str(index) + ', type: ' + str(type)	
+        return 'lineNo: ' + str(self.lineNo) + ', string: ' + self.string  + ', index: ' + str(self.index) + ', type: ' + str(self.type)	
  
     def __checkInputs__(self, lineNo, index, string, changeType):
-        if not type(lineNo) == int:
-            raise ChangeIncorrectConstructorArgument("lineNo", lineNo)
-        elif not type(changeType) == int:
-            raise ChangeIncorrectConstructorArgument("changeType", changeType)
-        elif not (type(index) == int or (type(index) == tuple and changeType == Change.delete)):
-            raise ChangeIncorrectConstructorArgument("index", index)
-        elif not type(string) == str:
-            raise ChangeIncorrectConstructorArgument("string", string)
+        pass
+#         if not (type(lineNo) == int or type(lineNo) == tuple):
+#             raise ChangeIncorrectArgument("lineNo", lineNo)
+#         elif not type(changeType) == int:
+#             raise ChangeIncorrectArgument("changeType", changeType)
+#         elif not (type(index) == int or (type(index) == tuple and changeType == Change.delete)):
+#             raise ChangeIncorrectArgument("index", index)
+#         elif not type(string) == str:
+#             raise ChangeIncorrectArgument("string", string)
         
 class NonexistantChangeTypeException(Exception):
     pass 
@@ -119,7 +185,12 @@ class ChangeIndexOutOfBoundsException(Exception):
     pass
 class ChangeLineOutOfBoundsException(Exception):
     pass
-class ChangeIncorrectConstructorArgument(Exception):
+class InvalidCaseForTupleTypeLineNumber(Exception):
+    pass
+class SinglePointIndexUsedForMultipleLinesException(Exception):
+    pass
+
+class ChangeIncorrectArgument(Exception):
     
     def __init__(self, arg, value):
-        super(ChangeIncorrectConstructorArgument, self).__init__(arg + str(value))
+        super(ChangeIncorrectArgument, self).__init__(arg + str(value))
