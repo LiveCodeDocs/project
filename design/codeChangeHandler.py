@@ -74,6 +74,7 @@ def setCodeChanges(fileid, codeChanges):
 		#print json.dumps(change)
 		changeDict = parseRawChange(json.dumps(change))
 		changeList = setupChangeObject(changeDict)
+		print changeList
 		if len(changeList) == 3:
 			codeStructures[fileid]['change_queue'].put(Change(changeList[0], changeList[1], changeList[2]))
 		else:
@@ -130,7 +131,8 @@ def parseRawChange(dump):
             if changeList[1] == 'line':
                 lineno = newSplit[1]
                 lineList.insert(0, int(lineno))
-
+    if len(lineList) == 1:
+	lineList.insert(1, lineList[0])
     parsedChangeDict['line_range'] = lineList
     parsedChangeDict['index_range'] = indexList
     return parsedChangeDict
