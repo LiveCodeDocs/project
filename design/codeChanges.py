@@ -1,21 +1,40 @@
 '''
 @author: bonattt
 '''
+import threading
+from Queue import Queue
 
 #from test.test_importlib.source.test_source_encoding import LineEndingTest
-class Code():
+class Code(threading.Thread):
     
-    def __init__(self, codeStr, fileID):
-        
+    def __init__(self, changeQueue, codeRequestQueue, outputQueue, codeStr, fileID):
+	threading.Thread.__init__(self, args=(), kwargs=None)
+	self.changeQueue = changeQueue
+	self.codeRequestQueue = codeRequestQueue
+	self.outputQueue = outputQueue
         self.fileID = fileID
         self.linesOfCode = codeStr.split("\n")
         self.queueOfChanges = []
         self.exitFlag = False
         
+    def run(self):
+	while True:
+	   while not self.changeQueue.empty():
+	        newChange = self.changeQueue.get()
+		print 'handling change: ' + str(newChange)
+		self.enqueueChange(newChange)
+		#self.enqueueChange(self.changeQueue.get())
+	   if not self.codeRequestQueue.empty():
+		while not self.codeRequestQueue.empty():
+		  self.codeRequestQueue.get()
+		self.outputQueue.put(self.getCode())
+	   self.handleChanges()
+	    		
+
     def keepCodeUpToDate(self):
         while not self.exitFlag:
             self.handleChanges()
-        
+ 
     def getCode(self):
         codeStr = ""
         for k in range(len(self.linesOfCode)):
@@ -98,8 +117,9 @@ class Code():
         
     def applyChange(self, change):
         if change.lineNumber >= len(self.linesOfCode):
-            raise ChangeLineOutOfBoundsException()
-        
+            return
+	    raise ChangeLineOutOfBoundsException() 
+
         if change.type == Change.insert:
             self._applyInsert_(change)
         elif change.type == Change.delete:
@@ -113,7 +133,8 @@ class Code():
         
     def _applyInsert_(self, change):
         if change.index > len(self.linesOfCode[change.lineNumber]):
-            raise ChangeIndexOutOfBoundsException()
+            return	
+	    raise ChangeIndexOutOfBoundsException()
         lineEdited = self.linesOfCode[change.lineNumber]
         list1 = list(lineEdited[0 : change.index])
         list2 = list(lineEdited[change.index:])
@@ -167,7 +188,7 @@ class Change():
         self.type = changeType
     
     def __repr__(self):
-        return 'lineNo: ' + str(self.lineNo) + ', string: ' + self.string  + ', index: ' + str(self.index) + ', type: ' + str(self.type)	
+        return 'lineNo: ' + str(self.lineNumber) + ', string: ' + self.string  + ', index: ' + str(self.index) + ', type: ' + str(self.type)	
  
     def __checkInputs__(self, lineNo, index, string, changeType):
         pass

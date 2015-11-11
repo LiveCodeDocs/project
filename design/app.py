@@ -124,7 +124,7 @@ def makeCodeChanges():
 		setCodeChanges(request.json['fileid'], request.json['changes'])
 		return 'success'
 	return 'error - incorrect request type on update code'
-	
+
 		
 def getProjects():
 	if request.method == 'POST':

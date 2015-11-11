@@ -174,7 +174,7 @@ $(document).ready(function() {
 	var getCodeChanges = function() {
 		var fileid = currentFileId;
 		if (fileid == -1) {
-			setTimeout(getCodeChanges, 5000);
+			setTimeout(getCodeChanges, 1000);
 			return;
 		}
 		$.ajax({
@@ -183,7 +183,7 @@ $(document).ready(function() {
 			data: { "fileid": fileid },
 			success: function(data) {
 				console.log("SUCCESSFUL PULL", data);
-				setTimeout(getCodeChanges, 5000);
+				setTimeout(getCodeChanges, 1000);
 				var cursorLocation = myCodeMirror.getCursor();
 				var id;
 				for (var id in data) {
@@ -209,7 +209,7 @@ $(document).ready(function() {
 		var testData = codeChangeArray;
 		codeChangeArray = [];
 		if (testData.length == 0 || currentFileId == -1) {
-			setTimeout(sendCodeChanges, 5000);
+			setTimeout(sendCodeChanges, 1000);
 			return;
 		}
 		$.ajax({
@@ -218,18 +218,18 @@ $(document).ready(function() {
 			data: JSON.stringify({"changes": testData, "fileid": currentFileId}, null, '\t'),
 			contentType: "application/json; charset-utf-8",
 			success: function(data) {
-				setTimeout(sendCodeChanges, 5000);
+				setTimeout(sendCodeChanges, 1000);
 			},
 			error: function(error) {
 				console.log("error getting code changes: " + error);
-				setTimeout(sendCodeChanges, 5000);
+				setTimeout(sendCodeChanges, 1000);
 			}
 		});
 	}
 
 	//DONE: IMPLEMENT CODE FOR THESE CALLS
-	setTimeout(getCodeChanges, 5000);
-	setTimeout(sendCodeChanges, 5000);
+	setTimeout(getCodeChanges, 2000);
+	setTimeout(sendCodeChanges, 1000);
 	//END TEST
 
 	
