@@ -4,6 +4,7 @@
 
 import unittest
 import codeChanges
+from Queue import Queue
 
 def enqueueSomeChanges(code):
        
@@ -22,7 +23,7 @@ def printLinesOfCode(loc):
 class TestCodeChanges(unittest.TestCase):
     
     def setUp(self):
-        self.code = codeChanges.Code("", 0)
+        self.code = codeChanges.Code(Queue(), Queue(), Queue(), "", 0)
         self.code.linesOfCode = ["this is line 1",
                             "this is line 2",
                             "this is line 3",
@@ -297,7 +298,7 @@ class TestCodeChanges(unittest.TestCase):
     def testBensCode01(self):
         expected = ["print 'hello world'a"]
          
-        code = codeChanges.Code("print 'hello world'", 1)
+        code = codeChanges.Code(Queue(), Queue(), Queue(), "print 'hello world'", 1)
         change = codeChanges.Change(0, 0, 19, 'a')
         code.enqueueChange(change)
         code.handleChanges()
@@ -311,7 +312,7 @@ class TestCodeChanges(unittest.TestCase):
     def testBensCode02(self):
         expected = ["print 'hello world'"]
          
-        code = codeChanges.Code("print 'hello world'a", 2)
+        code = codeChanges.Code(Queue(), Queue(), Queue(), "print 'hello world'a", 2)
         change = codeChanges.Change((0, 0), 1, (19, 20))
         code.enqueueChange(change)
         code.handleChanges()
@@ -321,7 +322,7 @@ class TestCodeChanges(unittest.TestCase):
     def testBensCode03(self):
         expected = ["print 'hello world'", "a"]
           
-        code = codeChanges.Code("print 'hello world'", 3)
+        code = codeChanges.Code(Queue(), Queue(), Queue(), "print 'hello world'", 3)
         code.enqueueChange(codeChanges.Change(0, 2, 19))
         code.handleChanges()
         code.enqueueChange(codeChanges.Change(1, 0, 0, 'a'))
@@ -332,7 +333,7 @@ class TestCodeChanges(unittest.TestCase):
     def testBensCode04(self):
         expected = ["print 'hello world'", "aasdasda"]
          
-        code = codeChanges.Code("print 'hello world'\na", 4)
+        code = codeChanges.Code(Queue(), Queue(), Queue(), "print 'hello world'\na", 4)
         code.enqueueChange(codeChanges.Change(1, 0, 1, 'a'))
         code.enqueueChange(codeChanges.Change(1, 0, 2, 's'))
         code.enqueueChange(codeChanges.Change(1, 0, 3, 'd'))
@@ -347,7 +348,7 @@ class TestCodeChanges(unittest.TestCase):
     def testBensCode05(self):
         expected = ["print "]
          
-        code = codeChanges.Code("print 'hello world'\naasdasda", 5)
+        code = codeChanges.Code(Queue(), Queue(), Queue(), "print 'hello world'\naasdasda", 5)
         code.enqueueChange(codeChanges.Change((0, 1), 1, (6, 8)))
         code.handleChanges()
          
