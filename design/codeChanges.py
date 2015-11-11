@@ -42,7 +42,7 @@ class Code(threading.Thread):
         return codeStr
         
     def enqueueChange(self, change):
-        if type(change.lineNumber) == tuple:
+        if type(change.lineNumber) == tuple or type(change.lineNumber) == type([]):
             self._expandMultiLinedChange_(change)
         else:
             self.queueOfChanges.append(change)
@@ -54,7 +54,7 @@ class Code(threading.Thread):
                 raise ChangeIncorrectArgument("index should be int for multiple line insert: ", change.index)
             self._expandMultiLineInsert_(change)
         if change.type == Change.delete:
-            if type(change.index) != tuple:
+            if type(change.index) != tuple and type(change.index) != type([]):
                 raise ChangeIncorrectArgument("index should be tuple for multiple line delete: ", change.index)
             self._expandMultiLineDelete_(change)
         if change.type == Change.deleteLine:

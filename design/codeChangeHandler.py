@@ -77,8 +77,13 @@ def setCodeChanges(fileid, codeChanges):
 		print changeList
 		if len(changeList) == 3:
 			codeStructures[fileid]['change_queue'].put(Change(changeList[0], changeList[1], changeList[2]))
-		else:
+		if len(changeList) == 4:
+			print codeStructures[fileid]['change_queue']
 			codeStructures[fileid]['change_queue'].put(Change(changeList[0], changeList[1], changeList[2], changeList[3])) 
+		else:
+			print 'unexpected input in setCodeChanges'
+			print changeList
+			return
 
 def exportCode(fileid):
     codeBody = requestCode(fileid) 

@@ -168,6 +168,7 @@ $(document).ready(function() {
 	var codeChangeArray = [];
 	myCodeMirror.on("changes", function(myCodeMirror, changeArray) {
 		codeChangeArray.push(changeArray);
+		console.log("CHANGE: ", changeArray);
 	});
 	
 	//DONE: REPLACE WITH AJAX
