@@ -21,7 +21,7 @@ class Code(threading.Thread):
 	while True:
 	   while not self.changeQueue.empty():
 	        newChange = self.changeQueue.get()
-		print 'handling change: ' + str(newChange)
+		#print 'handling change: ' + str(newChange)
 		self.enqueueChange(newChange)
 		#self.enqueueChange(self.changeQueue.get())
 	   if not self.codeRequestQueue.empty():
@@ -116,7 +116,7 @@ class Code(threading.Thread):
         return True
         	
     def applyChange(self, change):
-        print "-- begin applying change --"
+        #print "-- begin applying change --"
 	numToCheck = 0
 	if not isinstance(change.lineNumber, list):
 	    numToCheck = change.lineNumber
@@ -124,9 +124,9 @@ class Code(threading.Thread):
 	    numToCheck = change.lineNumber[1]
 
 	if numToCheck >= len(self.linesOfCode):
-	    print 'hit expected error'
-	    print 'end line: ' + str(numToCheck)
-	    print 'current lines of code: ' + str(len(self.linesOfCode))
+	    #print 'hit expected error'
+	    #print 'end line: ' + str(numToCheck)
+	    #print 'current lines of code: ' + str(len(self.linesOfCode))
 	    return
 	    #raise ChangeLineOutOfBoundsException() 
 
@@ -140,7 +140,7 @@ class Code(threading.Thread):
             self.removeLineAt(change.lineNumber)
         else:
             raise NonexistantChangeTypeException()
-	print "-- finished applying change--\n"        
+	#print "-- finished applying change--\n"        
 
     def _applyInsert_(self, change):
         if change.index > len(self.linesOfCode[change.lineNumber]):
@@ -154,7 +154,7 @@ class Code(threading.Thread):
         self.linesOfCode[change.lineNumber] = "".join(list1 + list2)
     
     def _applyRemove_(self, change):
-	print "-- beginning remove --"
+	#print "-- beginning remove --"
         if type(change.lineNumber) == tuple:
             self._applyRemoveOnMultipleLines_(change)
             return
@@ -165,10 +165,10 @@ class Code(threading.Thread):
         str1 = lineEdited[0 : change.index[0]]
         str2 = lineEdited[change.index[1] : ]
         self.linesOfCode[change.lineNumber] = str1 + str2
-	print "-- finished remove --\n"     
+	#print "-- finished remove --\n"     
 
     def removeLineAt(self, lineNumber):
-        print "-- remove line begin --"
+        #print "-- remove line begin --"
 	secondLine = self.linesOfCode[lineNumber + 1]
         self.linesOfCode.remove(secondLine)
         self.linesOfCode[lineNumber] = self.linesOfCode[lineNumber] + secondLine
@@ -176,7 +176,7 @@ class Code(threading.Thread):
         for k in range(len(self.queueOfChanges)):
             if lineNumber < self.queueOfChanges[k].lineNumber:
                 self.queueOfChanges[k].lineNumber -= 1
-	print "-- finished removing line --\n"        
+	#print "-- finished removing line --\n"        
 
     def newLineAt(self, lineNumber, index=0, linesAdded=1):
         secondLine = self.linesOfCode[lineNumber][index :]

@@ -8,10 +8,10 @@ from threading import Thread
 
 codeStructures = {}
 
-
 def requestCode(fileid):
 	codeStructures[fileid]['request_queue'].put(1)
 	done = False
+	print 'entered'
 	while not done:
 		if not codeStructures[fileid]['out_queue'].empty():
 			done = True
@@ -63,7 +63,9 @@ def pullCodeChanges(fileid):
 		print 'code object not open for that file'
 		return False		
 	thecode = requestCode(fileid)
-	return thecode[0:len(thecode) - 1]
+	#return thecode[0:len(thecode) - 1]
+	strippedcode = thecode.rstrip('\n')
+	return strippedcode + '\n'
 
 #fileid - int of the file id
 #codeChanges
@@ -74,15 +76,15 @@ def setCodeChanges(fileid, codeChanges):
 		#print json.dumps(change)
 		changeDict = parseRawChange(json.dumps(change))
 		changeList = setupChangeObject(changeDict)
-		print changeList
+		#print changeList
 		if len(changeList) == 3:
 			codeStructures[fileid]['change_queue'].put(Change(changeList[0], changeList[1], changeList[2]))
 		if len(changeList) == 4:
-			print codeStructures[fileid]['change_queue']
+			#print codeStructures[fileid]['change_queue']
 			codeStructures[fileid]['change_queue'].put(Change(changeList[0], changeList[1], changeList[2], changeList[3])) 
 		else:
 			print 'unexpected input in setCodeChanges'
-			print changeList
+			#print changeList
 			return
 
 def exportCode(fileid):

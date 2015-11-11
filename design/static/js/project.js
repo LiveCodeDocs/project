@@ -101,7 +101,6 @@ $(document).ready(function() {
 	}
 
 	var loadFiles = function(projectId) {
-		setTimeout(function() { loadFiles(2); }, 5000);
 		var query = [{
 			"projectid": projectId
 		}];
@@ -167,8 +166,14 @@ $(document).ready(function() {
 
 	var codeChangeArray = [];
 	myCodeMirror.on("changes", function(myCodeMirror, changeArray) {
+		if (changeArray[0]["origin"] == "setValue") {
+			console.log("DONT SEND");
+			return;
+		} else {
+			console.log(changeArray);
+		}
 		codeChangeArray.push(changeArray);
-		console.log("CHANGE: ", changeArray);
+		sendCodeChanges();
 	});
 	
 	//DONE: REPLACE WITH AJAX
@@ -177,31 +182,31 @@ $(document).ready(function() {
 		if (fileid == -1) {
 			setTimeout(getCodeChanges, 1000);
 			return;
-		}
-		$.ajax({
-			type: "GET",
-			url: "http://livecodedocs.csse.rose-hulman.edu:5000/clientPullCode",
-			data: { "fileid": fileid },
-			success: function(data) {
-				console.log("SUCCESSFUL PULL", data);
-				setTimeout(getCodeChanges, 1000);
-				var cursorLocation = myCodeMirror.getCursor();
-				var id;
-				for (var id in data) {
-					if (data[id] != null) {
-						myCodeMirror.setValue(data[id]);
-						myCodeMirror.setCursor(cursorLocation);
-						codeChangeArray.pop();
-					} else {
-						myCodeMirror.setValue("");
-						codeChangeArray.pop();
+		} else {
+			$.ajax({
+				type: "GET",
+				url: "http://livecodedocs.csse.rose-hulman.edu:5000/clientPullCode",
+				data: { "fileid": fileid },
+				success: function(data) {
+					setTimeout(getCodeChanges, 1000);
+					var cursorLocation = myCodeMirror.getCursor();
+					var id;
+					for (var id in data) {
+						if (data[id] != null) {
+							myCodeMirror.setValue(data[id]);
+							myCodeMirror.setCursor(cursorLocation);
+							codeChangeArray.pop();
+						} else {
+							myCodeMirror.setValue("");
+							codeChangeArray.pop();
+						}
 					}
+				},
+				error: function(data) {
+					console.log("ERROR: ", data);
 				}
-			},
-			error: function(data) {
-				console.log("ERROR: ", data);
-			}
-		});
+			});
+		}
 	}
 			 
 
@@ -210,7 +215,7 @@ $(document).ready(function() {
 		var testData = codeChangeArray;
 		codeChangeArray = [];
 		if (testData.length == 0 || currentFileId == -1) {
-			setTimeout(sendCodeChanges, 1000);
+			//setTimeout(sendCodeChanges, 1000);
 			return;
 		}
 		$.ajax({
@@ -219,18 +224,18 @@ $(document).ready(function() {
 			data: JSON.stringify({"changes": testData, "fileid": currentFileId}, null, '\t'),
 			contentType: "application/json; charset-utf-8",
 			success: function(data) {
-				setTimeout(sendCodeChanges, 1000);
+				//setTimeout(sendCodeChanges, 1000);
 			},
 			error: function(error) {
 				console.log("error getting code changes: " + error);
-				setTimeout(sendCodeChanges, 1000);
+				//setTimeout(sendCodeChanges, 1000);
 			}
 		});
 	}
 
 	//DONE: IMPLEMENT CODE FOR THESE CALLS
 	setTimeout(getCodeChanges, 2000);
-	setTimeout(sendCodeChanges, 1000);
+	//setTimeout(sendCodeChanges, 1000);
 	//END TEST
 
 	
