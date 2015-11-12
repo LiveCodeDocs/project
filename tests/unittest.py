@@ -20,9 +20,7 @@ def printLinesOfCode(loc):
     for k in range(len (loc)):
         print(loc[k])
 
-class TestCodeChanges(unittest.TestCase):
-
-	def unittest.main():
+def main():
 		setUp()
 		testInsertMultipleLinesInsertsMultipleLinesEndOfALine()
 		testInsertMultipleLinesInsertsMultipleLinesMiddleOfALine()
@@ -54,6 +52,8 @@ class TestCodeChanges(unittest.TestCase):
 	    testBensCode03()
 	    testBensCode04()
 	    testBensCode05()
+
+class TestCodeChanges(unittest.TestCase):
     
     def setUp(self):
         self.code = codeChanges.Code(Queue(), Queue(), Queue(), "", 0)
