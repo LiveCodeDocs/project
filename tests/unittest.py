@@ -387,4 +387,4 @@ class TestCodeChanges(unittest.TestCase):
         self.assertEqual(expected, code.linesOfCode)
 
 if __name__ == '__main__':
-    unittest.main()
+    main()
