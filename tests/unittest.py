@@ -1,4 +1,4 @@
-	'''
+'''
 @author: bonattt
 '''
 
@@ -19,6 +19,39 @@ def enqueueSomeChanges(code):
 def printLinesOfCode(loc):
     for k in range(len (loc)):
         print(loc[k])
+
+def main():
+	setUp()
+	testInsertMultipleLinesInsertsMultipleLinesEndOfALine()
+	testInsertMultipleLinesInsertsMultipleLinesMiddleOfALine()
+	testInsertMultipleLinesInsertsMultipleLinesBeginningOfALine()
+	testDeleteMultipleLinesDeletesMultipleLines1()
+	testRemoveFromZeroToZeroRemovesNothing()
+    testGetCodeGetsCode()
+    testDequeueChangeRemovesChange()
+    testDequeueChangeReturnsFirstAdded()
+    testRemoveLineShiftsLinesBelow()
+    testRemoveLineDoesNotShiftLinesAbove()
+    testNewLineShiftsLinesBelow()
+    testNewLineDoesNotShiftLinesAbove()
+    testApplyInsertChangesCorrectLine()
+    testInsertInsertsAtCorrectIndex1()
+    testInsertInsertsAtCorrectIndex2()
+    testApplyInsertMakesCorrectChanges()
+    testApplyRemoveRemovesFromCorrectLine()
+    testApplyRemoveCorrectCode1()
+    testApplyRemoveCorrectCode2()
+    testApplyChangeDoesNotChangeOtherLines()
+    testNewLineInTheMiddleOfALineSplitsTheLine()
+    testNewLineSplitMaintainsCode()
+    testDeleteLineMergesLines()
+    testNewLineIncreasesLengthOfCode()
+    testRemoveLineDecreasesLengthOfCode()
+    testBensCode01()
+    testBensCode02()
+    testBensCode03()
+    testBensCode04()
+    testBensCode05()
 
 class TestCodeChanges(unittest.TestCase):
     
@@ -156,7 +189,7 @@ class TestCodeChanges(unittest.TestCase):
         self.code.enqueueChange(change1)
         enqueueSomeChanges(self.code)
         self.assertTrue(self.code.dequeueChange() is change1)
-        
+
     def testRemoveLineShiftsLinesBelow(self):
         change1 = codeChanges.Change(0, codeChanges.Change.insert, 13, " -- this line has been changed")
         change2 = codeChanges.Change(1, codeChanges.Change.insert, 13, " -- this line has been changed")
@@ -244,7 +277,7 @@ class TestCodeChanges(unittest.TestCase):
         change = codeChanges.Change(0, codeChanges.Change.insert, 14, " -- this line has been changed")
         self.code.applyChange(change)
         self.assertEqual("this is line 1 -- this line has been changed", self.code.linesOfCode[0])
-        
+
     def testApplyRemoveRemovesFromCorrectLine(self):
         change = codeChanges.Change(0, codeChanges.Change.delete, (2, 8), "")
         self.code.applyChange(change)
@@ -308,7 +341,6 @@ class TestCodeChanges(unittest.TestCase):
 #         print(code.linesOfCode)
         self.assertEqual(expected, code.linesOfCode)
          
-     
     def testBensCode02(self):
         expected = ["print 'hello world'"]
          
@@ -353,10 +385,6 @@ class TestCodeChanges(unittest.TestCase):
         code.handleChanges()
          
         self.assertEqual(expected, code.linesOfCode)
-        
-        
-if __name__ == '__main__':
-    unittest.main()
 
 if __name__ == '__main__':
     unittest.main()
