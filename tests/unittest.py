@@ -22,7 +22,7 @@ def printLinesOfCode(loc):
 
 class TestCodeChanges(unittest.TestCase):
 
-	def main():
+	def unittest.main():
 		setUp()
 		testInsertMultipleLinesInsertsMultipleLinesEndOfALine()
 		testInsertMultipleLinesInsertsMultipleLinesMiddleOfALine()
@@ -387,4 +387,4 @@ class TestCodeChanges(unittest.TestCase):
         self.assertEqual(expected, code.linesOfCode)
 
 if __name__ == '__main__':
-    main()
+    unittest.main()
